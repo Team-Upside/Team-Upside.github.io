@@ -26,7 +26,6 @@ const ChatListPage = () => {
           css={css`
             color: ${theme.palette.gray[70]};
             font-size: 16px;
-            font-style: normal;
             font-weight: 590;
             line-height: 140%;
             letter-spacing: -0.064px;
