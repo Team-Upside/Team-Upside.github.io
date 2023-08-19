@@ -34,7 +34,7 @@ const MainPage = () => {
         >
           {cards.map(({ id, message, user, restaurant }) => (
             <Card
-              key={user.nickname}
+              key={`${user.nickname}-${id}`}
               id={id}
               message={message}
               user={user}
