@@ -7,7 +7,9 @@ import { ReactComponent as ChevronRightIcon } from '../../assets/icons/chevron-r
 import ProfileExample from '../../assets/profile-example.png';
 import UserProfileModal from './UserProfileModal';
 import { UserDto } from '../types';
-import { RestaurantDto } from '../../cards/types';
+import { CardDto, RestaurantDto } from '../../cards/types';
+import { useMutation } from '@tanstack/react-query';
+import { useAxios } from '../AxiosContext';
 
 const cardStyle = css`
   position: absolute;
@@ -45,23 +47,36 @@ const distanceStyle = css`
 `;
 
 interface CardProps {
+  id: number;
   message: string;
   user: UserDto;
   restaurant: RestaurantDto;
 }
 
-const Card: FC<CardProps> = ({ message, user, restaurant }) => {
+const Card: FC<CardProps> = ({ id, message, user, restaurant }) => {
+  const axios = useAxios();
+
   const theme = useTheme();
 
   const [isOpen, setOpen] = useState(false);
 
-  const swiped = (direction: string, nameToDelete: string) => {
-    console.log('removing: ' + nameToDelete);
-    // setLastDirection(direction);
-  };
+  const { mutateAsync: approve } = useMutation({
+    mutationFn: async () => {
+      await axios.post<undefined, CardDto>(`/cards/${id}/approve`);
+    },
+  });
+  const { mutateAsync: ignore } = useMutation({
+    mutationFn: async () => {
+      await axios.post<undefined, CardDto>(`/cards/${id}/ignore`);
+    },
+  });
 
-  const outOfFrame = (name: string) => {
-    console.log(name + ' left the screen!');
+  const outOfFrame = async (direction: string) => {
+    if (direction === 'left') {
+      await ignore();
+      return;
+    }
+    await approve();
   };
 
   const [showingPictureIndex, setShowingPictureIndex] = useState(0);
@@ -70,8 +85,8 @@ const Card: FC<CardProps> = ({ message, user, restaurant }) => {
     <TinderCard
       css={cardStyle}
       preventSwipe={['up', 'down']}
-      onSwipe={(dir) => swiped(dir, user.nickname)}
-      onCardLeftScreen={() => outOfFrame(user.nickname)}
+      onCardLeftScreen={outOfFrame}
+      swipeRequirementType="position"
     >
       <div
         css={css`
