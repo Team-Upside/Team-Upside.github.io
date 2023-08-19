@@ -5,9 +5,10 @@ import TinderCard from 'react-tinder-card';
 const cardStyle = css`
   position: absolute;
   background-color: #fff;
-  width: 100%;
+  width: calc(100% - 20px);
   height: 80%;
-  max-height: 500px;
+  height: 524px;
+  max-height: 524px;
   box-shadow: 0px 0px 60px 0px rgba(0, 0, 0, 0.3);
   border-radius: 20px;
   background-size: cover;
