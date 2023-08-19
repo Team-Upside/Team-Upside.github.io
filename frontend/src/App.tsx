@@ -10,6 +10,7 @@ import SwipePage from './pages/SwipePage';
 import SignupPage from './pages/SignupPage';
 import { ThemeProvider } from '@mui/material';
 import { theme } from './styles/theme';
+import SignupProvider from './signup/contexts/SignupContext';
 
 const queryClient = new QueryClient();
 
@@ -33,7 +34,14 @@ const App: FC = () => (
               <Routes>
                 <Route path="/" element={<MainPage />} />
                 <Route path="/login" element={<LoginPage />} />
-                <Route path="/signup" element={<SignupPage />} />
+                <Route
+                  path="/signup"
+                  element={
+                    <SignupProvider>
+                      <SignupPage />
+                    </SignupProvider>
+                  }
+                />
                 <Route path="/swipe" element={<SwipePage />} />
               </Routes>
             </BrowserRouter>

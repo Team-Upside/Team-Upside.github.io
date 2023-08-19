@@ -1,7 +1,6 @@
 import { FC, memo } from 'react';
-import { SignupProps } from '../types';
 
-const ProfileImageStep: FC<SignupProps> = () => {
+const ProfileImageStep: FC = () => {
   return (
     <div>
       <h1>Select your profile Image</h1>

@@ -18,10 +18,22 @@ export const theme = createTheme({
       90: '#3e1a00',
       100: '#231000',
     },
+    gray: {
+      10: '#F2F4F8',
+      20: '#DDE1E6',
+      30: '#C1C7CD',
+      40: '#A2A9B0',
+      50: '#878D96',
+      60: '#697077',
+      70: '#4D5358',
+      80: '#343A3F',
+      90: '#21272A',
+      100: '#121619',
+    },
   },
 });
 
-type Orange = {
+type Color = {
   10: string;
   20: string;
   30: string;
@@ -36,9 +48,11 @@ type Orange = {
 
 declare module '@mui/material/styles' {
   interface Palette {
-    orange: Orange;
+    orange: Color;
+    gray: Color;
   }
   interface PaletteOptions {
-    orange: Orange;
+    orange: Color;
+    gray: Color;
   }
 }

@@ -1,9 +1,7 @@
-import { Button, LinearProgress } from '@mui/material';
-import { FC, memo, useCallback, useState } from 'react';
+import { Button, LinearProgress, useTheme } from '@mui/material';
+import { FC, memo, useCallback, useMemo, useState } from 'react';
 import { css } from '@emotion/react';
 import NicknameStep from '../signup/components/NicknameStep';
-import { Gender } from '../common/types';
-import { SignupState } from '../signup/types';
 import BirthdateStep from '../signup/components/BirthdateStep';
 import GenderStep from '../signup/components/GenderStep';
 import MBTIStep from '../signup/components/MBTIStep';
@@ -11,20 +9,27 @@ import InterestStep from '../signup/components/InterestStep';
 import FavoriteFoodStep from '../signup/components/FavoriteFoodStep';
 import ProfileImageStep from '../signup/components/ProfileImageStep';
 import { SIGNUP_TITLES } from '../signup/constants';
+import { useSignupContext } from '../signup/contexts/SignupContext';
 
 const SignupPage: FC = () => {
   const [step, setStep] = useState(0);
+
+  const { nickname, birthdate } = useSignupContext();
+
+  const theme = useTheme();
+
+  const isSkipable = step >= 3;
+
+  const disabledRequiredButton = useMemo(
+    () =>
+      (step === 0 && nickname === '') || (step === 1 && birthdate.length < 8),
+    [step, nickname, birthdate]
+  );
 
   const handleClickNextStep = useCallback(
     () => setStep((prev) => prev + 1),
     [setStep]
   );
-
-  const [signupState, setSignupState] = useState<SignupState>({
-    nickname: '',
-    birthdate: '',
-    gender: Gender.Others,
-  });
 
   return (
     <div
@@ -43,9 +48,10 @@ const SignupPage: FC = () => {
           margin-top: 8px;
           height: 8px;
           border-radius: 8px;
+          background-color: ${theme.palette.gray[10]};
         `}
       />
-      {step >= 3 ? (
+      {isSkipable ? (
         <Button
           type="button"
           variant="text"
@@ -81,50 +87,19 @@ const SignupPage: FC = () => {
           >
             {SIGNUP_TITLES[step]}
           </h1>
-          {step === 0 && (
-            <NicknameStep
-              signupState={signupState}
-              setSignupState={setSignupState}
-            />
-          )}
-          {step === 1 && (
-            <BirthdateStep
-              signupState={signupState}
-              setSignupState={setSignupState}
-            />
-          )}
-          {step === 2 && (
-            <GenderStep
-              signupState={signupState}
-              setSignupState={setSignupState}
-            />
-          )}
-          {step === 3 && (
-            <MBTIStep
-              signupState={signupState}
-              setSignupState={setSignupState}
-            />
-          )}
-          {step === 4 && (
-            <InterestStep
-              signupState={signupState}
-              setSignupState={setSignupState}
-            />
-          )}
-          {step === 5 && (
-            <FavoriteFoodStep
-              signupState={signupState}
-              setSignupState={setSignupState}
-            />
-          )}
-          {step === 6 && (
-            <ProfileImageStep
-              setSignupState={setSignupState}
-              signupState={signupState}
-            />
-          )}
+          {step === 0 && <NicknameStep />}
+          {step === 1 && <BirthdateStep />}
+          {step === 2 && <GenderStep />}
+          {step === 3 && <MBTIStep />}
+          {step === 4 && <InterestStep />}
+          {step === 5 && <FavoriteFoodStep />}
+          {step === 6 && <ProfileImageStep />}
         </div>
-        <Button variant="contained" onClick={handleClickNextStep}>
+        <Button
+          variant="contained"
+          onClick={handleClickNextStep}
+          disabled={disabledRequiredButton}
+        >
           Continued
         </Button>
       </div>
