@@ -6,6 +6,7 @@ import OpponentUtterance from '../common/components/OpponentUtterance';
 import { ReactComponent as ChevronLeftIcon } from '../assets/icons/chevron-left.svg';
 import sampleFood1Image from '../assets/sample-food-1.png';
 import ChatInput from '../common/components/ChatInput';
+import { Link } from 'react-router-dom';
 const ChatListPage = () => {
   const theme = useTheme();
 
@@ -35,6 +36,8 @@ const ChatListPage = () => {
             padding: 0;
             left: 20px;
           `}
+          component={Link}
+          to="/chat"
         >
           <ChevronLeftIcon />
         </IconButton>
