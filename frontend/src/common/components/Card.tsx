@@ -145,10 +145,15 @@ const Card: FC<CardProps> = ({ message, user, restaurant }) => {
           css={css`
             width: 100%;
             height: 100%;
-            background-image: url(${restaurant.pictures[showingPictureIndex]});
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
+            background:
+              linear-gradient(
+                180deg,
+                rgba(0, 0, 0, 0) 0%,
+                rgba(0, 0, 0, 0.4) 100%
+              ),
+              url(${restaurant.pictures[showingPictureIndex]}) center / cover
+                no-repeat,
+              lightgray 50% / cover no-repeat;
           `}
         />
         <div
