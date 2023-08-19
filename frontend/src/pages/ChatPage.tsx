@@ -5,6 +5,7 @@ import MyUtterance from '../common/components/MyUtterance';
 import OpponentUtterance from '../common/components/OpponentUtterance';
 import { ReactComponent as ChevronLeftIcon } from '../assets/icons/chevron-left.svg';
 import sampleFood1Image from '../assets/sample-food-1.png';
+import ChatInput from '../common/components/ChatInput';
 const ChatListPage = () => {
   const theme = useTheme();
 
@@ -12,6 +13,8 @@ const ChatListPage = () => {
     <div
       css={css`
         height: 100vh;
+        display: flex;
+        flex-direction: column;
       `}
     >
       <div
@@ -121,7 +124,7 @@ const ChatListPage = () => {
         css={css`
           display: flex;
           flex-direction: column;
-          justify-content: center;
+          justify-content: flex-start;
           flex: 1;
           padding: 20px 20px 0 20px;
           gap: 24px;
@@ -130,6 +133,7 @@ const ChatListPage = () => {
         <OpponentUtterance />
         <MyUtterance />
       </div>
+      <ChatInput />
     </div>
   );
 };
