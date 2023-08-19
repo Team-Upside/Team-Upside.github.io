@@ -1,19 +1,21 @@
 import { css } from '@emotion/react';
-import { memo, useState } from 'react';
+import { memo } from 'react';
 import Navbar from '../common/components/Navbar';
 import Card from '../common/components/Card';
-import sampleFood1Image from '../assets/sample-food-1.png';
-import sampleFood2Image from '../assets/sample-food-2.png';
+import { useAxios } from '../common/AxiosContext';
+import { useQuery } from '@tanstack/react-query';
+import { CardDto } from '../cards/types';
 
 const MainPage = () => {
-  const [people, setPeople] = useState([
-    {
-      name: 'Elon Musk',
+  const axios = useAxios();
+
+  const { data: cards } = useQuery({
+    queryKey: ['cards'],
+    queryFn: async () => {
+      const { data } = await axios.get<CardDto[]>('/cards');
+      return data;
     },
-    {
-      name: 'Mark Zuckerberg',
-    },
-  ]);
+  });
 
   return (
     <div
@@ -22,22 +24,24 @@ const MainPage = () => {
       `}
     >
       <Navbar />
-      <div
-        css={css`
-          padding-top: 12px;
-          display: flex;
-          justify-content: center;
-        `}
-      >
-        {people.map((person) => (
-          <Card
-            key={person.name}
-            person={person}
-            restaurant={{ name: 'Lacoon Pizza' }}
-            images={[sampleFood1Image, sampleFood2Image]}
-          />
-        ))}
-      </div>
+      {cards ? (
+        <div
+          css={css`
+            padding-top: 12px;
+            display: flex;
+            justify-content: center;
+          `}
+        >
+          {cards.map(({ message, user, restaurant }) => (
+            <Card
+              key={user.nickname}
+              message={message}
+              user={user}
+              restaurant={restaurant}
+            />
+          ))}
+        </div>
+      ) : null}
     </div>
   );
 };
