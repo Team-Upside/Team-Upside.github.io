@@ -14,7 +14,7 @@ import { useSignupContext } from '../signup/contexts/SignupContext';
 const SignupPage: FC = () => {
   const [step, setStep] = useState(0);
 
-  const { nickname, birthdate } = useSignupContext();
+  const { validateBirthdate, validateNickname } = useSignupContext();
 
   const theme = useTheme();
 
@@ -22,8 +22,8 @@ const SignupPage: FC = () => {
 
   const disabledRequiredButton = useMemo(
     () =>
-      (step === 0 && nickname === '') || (step === 1 && birthdate.length < 8),
-    [step, nickname, birthdate]
+      (step === 0 && !validateNickname) || (step === 1 && !validateBirthdate),
+    [step, validateNickname, validateBirthdate]
   );
 
   const handleClickNextStep = useCallback(
@@ -99,6 +99,7 @@ const SignupPage: FC = () => {
           variant="contained"
           onClick={handleClickNextStep}
           disabled={disabledRequiredButton}
+          size="large"
         >
           Continued
         </Button>

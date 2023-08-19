@@ -6,7 +6,7 @@ import {
 } from '../contexts/SignupContext';
 
 const NicknameStep: FC = () => {
-  const { nickname } = useSignupContext();
+  const { nickname, validateNickname } = useSignupContext();
   const { setNickname } = useSignupDispatchContext();
 
   return (
@@ -15,6 +15,11 @@ const NicknameStep: FC = () => {
       variant="standard"
       value={nickname}
       onChange={(e) => setNickname(e.target.value)}
+      error={!validateNickname}
+      helperText={
+        !validateNickname &&
+        'Nickname must be more than 1 character and less than 10 characters.'
+      }
       css={css`
         width: 100%;
       `}

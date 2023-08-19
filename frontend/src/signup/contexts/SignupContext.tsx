@@ -10,13 +10,20 @@ import { SignupState } from '../types';
 import { Gender, MBTI } from '../../common/types';
 import { produce } from 'immer';
 
-const initialState: SignupState = {
+type SignupContextType = SignupState & {
+  validateNickname: boolean;
+  validateBirthdate: boolean;
+};
+
+const initialState: SignupContextType = {
   nickname: '',
+  validateNickname: false,
   birthdate: '',
+  validateBirthdate: false,
   gender: Gender.Others,
 };
 
-const SignupContext = createContext<SignupState>(initialState);
+const SignupContext = createContext<SignupContextType>(initialState);
 
 const initialDispatch = {
   setNickname: () => {},
@@ -40,6 +47,19 @@ const SignupDispatchContext = createContext<{
 
 const SignupProvider = ({ children }: { children: ReactNode }) => {
   const [signupState, setSignupState] = useState<SignupState>(initialState);
+
+  const validateNickname = useMemo(() => {
+    const { nickname } = signupState;
+
+    return nickname !== '' && nickname.length <= 10;
+  }, [signupState.nickname]);
+
+  const validateBirthdate = useMemo(
+    () =>
+      signupState.birthdate.length === 12 &&
+      !isNaN(Date.parse(signupState.birthdate)),
+    [signupState.birthdate]
+  );
 
   const signupDispatch = useMemo(
     () => ({
@@ -111,7 +131,13 @@ const SignupProvider = ({ children }: { children: ReactNode }) => {
   );
 
   return (
-    <SignupContext.Provider value={signupState}>
+    <SignupContext.Provider
+      value={{
+        ...signupState,
+        validateNickname,
+        validateBirthdate,
+      }}
+    >
       <SignupDispatchContext.Provider value={signupDispatch}>
         {children}
       </SignupDispatchContext.Provider>

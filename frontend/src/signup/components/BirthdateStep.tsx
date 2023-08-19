@@ -1,13 +1,15 @@
 import { TextField, css } from '@mui/material';
-import { FC, memo } from 'react';
+import { FC, memo, useState } from 'react';
 import {
   useSignupContext,
   useSignupDispatchContext,
 } from '../contexts/SignupContext';
 
 const BirthdateStep: FC = () => {
-  const { birthdate } = useSignupContext();
+  const { birthdate, validateBirthdate } = useSignupContext();
   const { setBirthdate } = useSignupDispatchContext();
+
+  const [visibleError, setVisibleError] = useState(false);
 
   return (
     <TextField
@@ -16,7 +18,13 @@ const BirthdateStep: FC = () => {
       value={birthdate}
       placeholder="YYYYMMDD"
       onChange={(e) => setBirthdate(e.target.value)}
+      error={!validateBirthdate && visibleError}
+      helperText={
+        !validateBirthdate && visibleError && 'Please validate your birthdate.'
+      }
+      onFocus={() => setVisibleError(false)}
       onBlur={() => {
+        setVisibleError(true);
         if (birthdate.length === 8) {
           setBirthdate(
             `${birthdate.slice(0, 4)}. ${birthdate.slice(
