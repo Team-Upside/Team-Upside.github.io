@@ -1,10 +1,16 @@
 import { Avatar, ButtonBase, useTheme } from '@mui/material';
 import sampleProfile from '../../assets/sample-profile.png';
 import { css } from '@emotion/react';
-import { memo } from 'react';
+import { FC, memo } from 'react';
 import { Link } from 'react-router-dom';
+import { ChatroomDto } from '../types';
+import { formatDistanceToNow } from 'date-fns';
 
-const ChatListItem = () => {
+interface ChatListItemProps {
+  chatroom: ChatroomDto;
+}
+
+const ChatListItem: FC<ChatListItemProps> = ({ chatroom }) => {
   const theme = useTheme();
   return (
     <ButtonBase
@@ -21,7 +27,7 @@ const ChatListItem = () => {
     >
       <Avatar
         alt=""
-        src={sampleProfile}
+        src={chatroom.opponent_user.profile ?? sampleProfile}
         css={css`
           width: 44px;
           height: 44px;
@@ -50,7 +56,7 @@ const ChatListItem = () => {
               letter-spacing: -0.064px;
             `}
           >
-            Alex Linderson
+            {chatroom.opponent_user.nickname}
           </h2>
           <p
             css={css`
@@ -62,7 +68,9 @@ const ChatListItem = () => {
               letter-spacing: -0.048px;
             `}
           >
-            2 min ago
+            {formatDistanceToNow(new Date(chatroom.updated_at), {
+              addSuffix: true,
+            })}
           </p>
         </div>
         <div
@@ -80,25 +88,27 @@ const ChatListItem = () => {
               letter-spacing: -0.048px;
             `}
           >
-            How are you today?
+            {chatroom.last_message}
           </p>
-          <div
-            css={css`
-              width: 16px;
-              height: 16px;
-              background-color: ${theme.palette.primary.main};
-              border-radius: 50%;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              color: white;
-              font-size: 10px;
-              font-weight: 400;
-              line-height: 12px;
-            `}
-          >
-            1
-          </div>
+          {chatroom.unread_count > 0 && (
+            <div
+              css={css`
+                width: 16px;
+                height: 16px;
+                background-color: ${theme.palette.primary.main};
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: white;
+                font-size: 10px;
+                font-weight: 400;
+                line-height: 12px;
+              `}
+            >
+              {chatroom.unread_count}
+            </div>
+          )}
         </div>
       </div>
     </ButtonBase>

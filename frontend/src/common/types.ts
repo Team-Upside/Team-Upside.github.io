@@ -1,3 +1,5 @@
+import type { RestaurantDto } from '../cards/types';
+
 export interface UserDto {
   id: string;
   nickname: string;
@@ -35,4 +37,14 @@ export enum MBTI {
   Entp = 'ENTP',
   Enfj = 'ENFJ',
   Enfp = 'ENFP',
+}
+
+export interface ChatroomDto {
+  id: number;
+  restaurant: RestaurantDto;
+  opponent_user: UserDto;
+  unread_count: number;
+  last_message: string;
+  created_at: string;
+  updated_at: string;
 }
