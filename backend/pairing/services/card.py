@@ -29,6 +29,9 @@ def get_prompt(
     user_mbti: str | None = None,
     user_interest: str | None = None,
 ) -> str:
+    user_interest = user_interest.replace("\n", " ").strip() if user_interest else None
+    opponent_interest = opponent_interest.replace("\n", " ").strip() if opponent_interest else None
+
     return f"""
 You are a bot that listens to the characteristics of a user and opponent, and suggests what conversation they should have when they meet.
 
