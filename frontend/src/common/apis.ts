@@ -1,19 +1,39 @@
-import axios from 'axios';
-import { TokenResponse } from './types';
+import axios, { AxiosError } from 'axios';
+import { CreateUserDto, UserDto } from './types';
 
 const unauthorizedAxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_API_URL,
 });
 
-export const refreshTokenApi = (token: string) =>
-  unauthorizedAxiosInstance.post<{ token: string }, TokenResponse>('/refresh', {
-    data: { token },
-  });
+export const getMeApi = async (token: string) => {
+  unauthorizedAxiosInstance.defaults.headers.common[
+    'Authorization'
+  ] = `Bearer ${token}`;
 
-export const googleLoginApi = (token: string) =>
-  unauthorizedAxiosInstance.post<{ token: string }, TokenResponse>(
-    '/auth/google',
-    {
-      data: { token },
+  try {
+    return await unauthorizedAxiosInstance.get<UserDto>('/users/me');
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      if (error.response?.status === 403) {
+        window.location.href = '/signup';
+      }
     }
+  }
+};
+
+export const createUserApi = async ({
+  token,
+  request,
+}: {
+  token: string;
+  request: CreateUserDto;
+}) => {
+  unauthorizedAxiosInstance.defaults.headers.common[
+    'Authorization'
+  ] = `Bearer ${token}`;
+
+  return await unauthorizedAxiosInstance.post<CreateUserDto, UserDto>(
+    '/users',
+    request
   );
+};

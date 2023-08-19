@@ -12,13 +12,21 @@ import { SIGNUP_TITLES } from '../signup/constants';
 import { useSignupContext } from '../signup/contexts/SignupContext';
 import LocationShareStep from '../signup/components/LocationShareStep';
 import { useNavigate } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
+import { createUserApi } from '../common/apis';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const SignupPage: FC = () => {
   const navigate = useNavigate();
 
   const [step, setStep] = useState(0);
 
-  const { validateBirthdate, validateNickname } = useSignupContext();
+  const { getAccessTokenSilently } = useAuth0();
+
+  const { validateBirthdate, validateNickname, ...signupRequest } =
+    useSignupContext();
+
+  const { mutateAsync: createUser } = useMutation(createUserApi);
 
   const theme = useTheme();
 
@@ -34,6 +42,13 @@ const SignupPage: FC = () => {
     () => setStep((prev) => prev + 1),
     [setStep]
   );
+
+  const handleClickCreateUser = useCallback(async () => {
+    const token = await getAccessTokenSilently();
+    console.log(token);
+    await createUser({ token, request: signupRequest });
+    navigate('/');
+  }, [createUser, navigate, signupRequest]);
 
   return (
     <div
@@ -128,11 +143,11 @@ const SignupPage: FC = () => {
         </div>
         <Button
           variant="contained"
-          onClick={step !== 7 ? handleClickNextStep : () => navigate('/swipe')}
+          onClick={step !== 7 ? handleClickNextStep : handleClickCreateUser}
           disabled={disabledRequiredButton}
           size="large"
         >
-          {step !== 7 ? 'Continued' : 'Allow'}
+          {step !== 7 ? 'Continue' : 'Allow'}
         </Button>
       </div>
     </div>

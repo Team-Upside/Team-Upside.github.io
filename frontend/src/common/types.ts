@@ -1,12 +1,16 @@
-export interface TokenResponse {
-  accessToken: string;
-  refreshToken: string;
+export interface UserDto {
+  id: string;
+  nickname: string;
+  birthdate: string;
+  gender: Gender;
+  mbti: string;
+  interest: string;
+  favorite_food: string;
+  profile: string;
 }
 
-export enum LocalStorageKey {
-  AccessToken = 'ACCESS_TOKEN',
-  RefreshToken = 'REFRESH_TOKEN',
-}
+export type CreateUserDto = Pick<UserDto, 'nickname' | 'birthdate' | 'gender'> &
+  Partial<UserDto>;
 
 export enum Gender {
   Male = 'MALE',

@@ -6,14 +6,14 @@ import {
 } from '../contexts/SignupContext';
 
 const FavoriteFoodStep: FC = () => {
-  const { favoriteFood } = useSignupContext();
+  const { favorite_food } = useSignupContext();
   const { setFavoriteFood } = useSignupDispatchContext();
 
   return (
     <TextField
       label={<span>Favorite Food</span>}
       variant="standard"
-      value={favoriteFood}
+      value={favorite_food}
       onChange={(e) => setFavoriteFood(e.target.value)}
       css={css`
         width: 100%;
