@@ -4,15 +4,6 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { useTheme } from '@mui/material';
 import Google from '../../assets/google.png';
 
-const containerStyle = css`
-  display: flex;
-  height: 100vh;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 10px;
-`;
-
 const LoginButton: FC = () => {
   const { loginWithRedirect } = useAuth0();
 
@@ -24,7 +15,7 @@ const LoginButton: FC = () => {
       type="button"
       css={css`
         position: relative;
-        width: 319px;
+        width: 100%;
         height: 50px;
         flex-shrink: 0;
         border-radius: 14px;
