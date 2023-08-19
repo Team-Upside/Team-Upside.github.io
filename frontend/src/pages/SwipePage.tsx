@@ -21,12 +21,12 @@ const SwipePage = () => {
         height: 100vh;
       `}
     >
-      <Navbar />
       <div
         css={css`
-          margin-top: 12px;
+          padding-top: 9px;
           display: flex;
           justify-content: center;
+          flex: 1;
         `}
       >
         {people.map((person) => (
@@ -38,6 +38,7 @@ const SwipePage = () => {
           />
         ))}
       </div>
+      <Navbar />
     </div>
   );
 };
