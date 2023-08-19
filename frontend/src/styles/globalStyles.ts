@@ -10,6 +10,9 @@ const globalStyles = css`
   code {
     font-family: monospace;
   }
+  html {
+    overflow: hidden;
+  }
 `;
 
 export default globalStyles;
