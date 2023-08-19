@@ -1,5 +1,5 @@
 import { Button, LinearProgress } from '@mui/material';
-import { FC, memo, useCallback, useState } from 'react';
+import { FC, memo, useCallback, useMemo, useState } from 'react';
 import { css } from '@emotion/react';
 import NicknameStep from '../signup/components/NicknameStep';
 import BirthdateStep from '../signup/components/BirthdateStep';
@@ -9,9 +9,20 @@ import InterestStep from '../signup/components/InterestStep';
 import FavoriteFoodStep from '../signup/components/FavoriteFoodStep';
 import ProfileImageStep from '../signup/components/ProfileImageStep';
 import { SIGNUP_TITLES } from '../signup/constants';
+import { useSignupContext } from '../signup/contexts/SignupContext';
 
 const SignupPage: FC = () => {
   const [step, setStep] = useState(0);
+
+  const { nickname, birthdate } = useSignupContext();
+
+  const isSkipable = step >= 3;
+
+  const disabledRequiredButton = useMemo(
+    () =>
+      (step === 0 && nickname === '') || (step === 1 && birthdate.length < 8),
+    [step, nickname, birthdate]
+  );
 
   const handleClickNextStep = useCallback(
     () => setStep((prev) => prev + 1),
@@ -37,7 +48,7 @@ const SignupPage: FC = () => {
           border-radius: 8px;
         `}
       />
-      {step >= 3 ? (
+      {isSkipable ? (
         <Button
           type="button"
           variant="text"
@@ -81,7 +92,11 @@ const SignupPage: FC = () => {
           {step === 5 && <FavoriteFoodStep />}
           {step === 6 && <ProfileImageStep />}
         </div>
-        <Button variant="contained" onClick={handleClickNextStep}>
+        <Button
+          variant="contained"
+          onClick={handleClickNextStep}
+          disabled={disabledRequiredButton}
+        >
           Continued
         </Button>
       </div>
