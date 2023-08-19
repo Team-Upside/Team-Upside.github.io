@@ -15,6 +15,7 @@ import { googleLoginApi, refreshTokenApi } from './apis';
 import useScript, { ScriptStatus } from './hooks/useScript';
 import { LocalStorageKey } from './types';
 import { useMutation } from '@tanstack/react-query';
+import { useLocalStorageValue } from '@react-hookz/web';
 
 axios.defaults.paramsSerializer = {
   indexes: null,
@@ -67,9 +68,9 @@ export const AuthProvider = ({ children }: AxiosProviderProps) => {
     'https://accounts.google.com/gsi/client',
     willLogout
   );
-  const [accessToken, setAccessToken] = useState<string | null>(
-    localStorage.getItem(LocalStorageKey.AccessToken)
-  );
+  const { value: accessToken, set: setAccessToken } = useLocalStorageValue<
+    string | null
+  >(LocalStorageKey.AccessToken);
 
   const axiosRef = useRef(
     axios.create({
