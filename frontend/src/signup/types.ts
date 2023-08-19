@@ -12,6 +12,6 @@ export interface SignupState {
   gender: Gender;
   mbti?: MBTI;
   interest?: string;
-  favoriteFood?: string;
-  profileImage?: string;
+  favorite_food?: string;
+  profile?: string;
 }

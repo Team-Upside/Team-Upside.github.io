@@ -108,20 +108,20 @@ const SignupProvider = ({ children }: { children: ReactNode }) => {
             return draft;
           })
         ),
-      setFavoriteFood: (favoriteFood: string) =>
+      setFavoriteFood: (favorite_food: string) =>
         setSignupState(
           produce((draft) => {
             if (draft) {
-              draft.favoriteFood = favoriteFood;
+              draft.favorite_food = favorite_food;
             }
             return draft;
           })
         ),
-      setProfileImage: (profileImage: string) =>
+      setProfileImage: (profile: string) =>
         setSignupState(
           produce((draft) => {
             if (draft) {
-              draft.profileImage = profileImage;
+              draft.profile = profile;
             }
             return draft;
           })
