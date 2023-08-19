@@ -1,5 +1,5 @@
 import { Button, LinearProgress } from '@mui/material';
-import { FC, memo, useState } from 'react';
+import { FC, memo, useCallback, useState } from 'react';
 import { css } from '@emotion/react';
 import NicknameStep from '../signup/components/NicknameStep';
 import { Gender } from '../common/types';
@@ -10,9 +10,15 @@ import MBTIStep from '../signup/components/MBTIStep';
 import InterestStep from '../signup/components/InterestStep';
 import FavoriteFoodStep from '../signup/components/FavoriteFoodStep';
 import ProfileImageStep from '../signup/components/ProfileImageStep';
+import { SIGNUP_TITLES } from '../signup/constants';
 
 const SignupPage: FC = () => {
   const [step, setStep] = useState(0);
+
+  const handleClickNextStep = useCallback(
+    () => setStep((prev) => prev + 1),
+    [setStep]
+  );
 
   const [signupState, setSignupState] = useState<SignupState>({
     nickname: '',
@@ -39,17 +45,23 @@ const SignupPage: FC = () => {
           border-radius: 8px;
         `}
       />
-      {step >= 3 && (
+      {step >= 3 ? (
         <Button
           type="button"
           variant="text"
           css={css`
             align-self: flex-end;
           `}
-          onClick={() => setStep((prev) => prev + 1)}
+          onClick={handleClickNextStep}
         >
           Skip
         </Button>
+      ) : (
+        <div
+          css={css`
+            height: 36.5px;
+          `}
+        />
       )}
       <div
         css={css`
@@ -61,46 +73,58 @@ const SignupPage: FC = () => {
           padding-bottom: 40px;
         `}
       >
-        {step === 0 && (
-          <NicknameStep
-            signupState={signupState}
-            setSignupState={setSignupState}
-          />
-        )}
-        {step === 1 && (
-          <BirthdateStep
-            signupState={signupState}
-            setSignupState={setSignupState}
-          />
-        )}
-        {step === 2 && (
-          <GenderStep
-            signupState={signupState}
-            setSignupState={setSignupState}
-          />
-        )}
-        {step === 3 && (
-          <MBTIStep signupState={signupState} setSignupState={setSignupState} />
-        )}
-        {step === 4 && (
-          <InterestStep
-            signupState={signupState}
-            setSignupState={setSignupState}
-          />
-        )}
-        {step === 5 && (
-          <FavoriteFoodStep
-            signupState={signupState}
-            setSignupState={setSignupState}
-          />
-        )}
-        {step === 6 && (
-          <ProfileImageStep
-            setSignupState={setSignupState}
-            signupState={signupState}
-          />
-        )}
-        <Button variant="contained" onClick={() => setStep((prev) => prev + 1)}>
+        <div>
+          <h1
+            css={css`
+              margin-bottom: 35px;
+            `}
+          >
+            {SIGNUP_TITLES[step]}
+          </h1>
+          {step === 0 && (
+            <NicknameStep
+              signupState={signupState}
+              setSignupState={setSignupState}
+            />
+          )}
+          {step === 1 && (
+            <BirthdateStep
+              signupState={signupState}
+              setSignupState={setSignupState}
+            />
+          )}
+          {step === 2 && (
+            <GenderStep
+              signupState={signupState}
+              setSignupState={setSignupState}
+            />
+          )}
+          {step === 3 && (
+            <MBTIStep
+              signupState={signupState}
+              setSignupState={setSignupState}
+            />
+          )}
+          {step === 4 && (
+            <InterestStep
+              signupState={signupState}
+              setSignupState={setSignupState}
+            />
+          )}
+          {step === 5 && (
+            <FavoriteFoodStep
+              signupState={signupState}
+              setSignupState={setSignupState}
+            />
+          )}
+          {step === 6 && (
+            <ProfileImageStep
+              setSignupState={setSignupState}
+              signupState={signupState}
+            />
+          )}
+        </div>
+        <Button variant="contained" onClick={handleClickNextStep}>
           Continued
         </Button>
       </div>

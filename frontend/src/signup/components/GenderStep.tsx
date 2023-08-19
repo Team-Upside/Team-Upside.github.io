@@ -12,59 +12,55 @@ const buttonStyle = (selected?: boolean) => css`
 
 const GenderStep: FC<SignupProps> = ({ signupState, setSignupState }) => {
   return (
-    <div>
-      <h1>Enter your gender</h1>
-      <div
-        css={css`
-          display: flex;
-          width: 100%;
-          gap: 8px;
-          margin-top: 35px;
-        `}
+    <div
+      css={css`
+        display: flex;
+        width: 100%;
+        gap: 8px;
+      `}
+    >
+      <Button
+        variant="outlined"
+        type="button"
+        size="large"
+        css={buttonStyle(signupState.gender === Gender.Male)}
+        onClick={() =>
+          setSignupState((prev) => ({
+            ...prev,
+            gender: Gender.Male,
+          }))
+        }
       >
-        <Button
-          variant="outlined"
-          type="button"
-          size="large"
-          css={buttonStyle(signupState.gender === Gender.Male)}
-          onClick={() =>
-            setSignupState((prev) => ({
-              ...prev,
-              gender: Gender.Male,
-            }))
-          }
-        >
-          Male
-        </Button>
-        <Button
-          variant="outlined"
-          type="button"
-          size="large"
-          css={buttonStyle(signupState.gender === Gender.Female)}
-          onClick={() =>
-            setSignupState((prev) => ({
-              ...prev,
-              gender: Gender.Female,
-            }))
-          }
-        >
-          Female
-        </Button>
-        <Button
-          variant="outlined"
-          type="button"
-          size="large"
-          css={buttonStyle(signupState.gender === Gender.Others)}
-          onClick={() =>
-            setSignupState((prev) => ({
-              ...prev,
-              gender: Gender.Others,
-            }))
-          }
-        >
-          Others
-        </Button>
-      </div>
+        Male
+      </Button>
+      <Button
+        variant="outlined"
+        type="button"
+        size="large"
+        css={buttonStyle(signupState.gender === Gender.Female)}
+        onClick={() =>
+          setSignupState((prev) => ({
+            ...prev,
+            gender: Gender.Female,
+          }))
+        }
+      >
+        Female
+      </Button>
+      <Button
+        variant="outlined"
+        type="button"
+        size="large"
+        css={buttonStyle(signupState.gender === Gender.Others)}
+        onClick={() =>
+          setSignupState((prev) => ({
+            ...prev,
+            gender: Gender.Others,
+          }))
+        }
+      >
+        Others
+      </Button>
     </div>
   );
 };
