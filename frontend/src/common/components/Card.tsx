@@ -4,6 +4,8 @@ import TinderCard from 'react-tinder-card';
 import { theme } from '../../styles/theme';
 import { Button, useTheme } from '@mui/material';
 import { ReactComponent as ChevronRightIcon } from '../../assets/icons/chevron-right.svg';
+import ProfileExample from '../../assets/profile-example.png';
+import UserProfileModal from './UserProfileModal';
 
 const cardStyle = css`
   position: absolute;
@@ -52,6 +54,9 @@ interface CardProps {
 
 const Card: FC<CardProps> = ({ person, restaurant, images }) => {
   const theme = useTheme();
+
+  const [isOpen, setOpen] = useState(false);
+
   const swiped = (direction: string, nameToDelete: string) => {
     console.log('removing: ' + nameToDelete);
     // setLastDirection(direction);
@@ -70,6 +75,59 @@ const Card: FC<CardProps> = ({ person, restaurant, images }) => {
       onSwipe={(dir) => swiped(dir, person.name)}
       onCardLeftScreen={() => outOfFrame(person.name)}
     >
+      <div
+        css={css`
+          position: absolute;
+          top: 28px;
+          left: 50%;
+          transform: translateX(-50%);
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 0 20px;
+          z-index: 3;
+        `}
+      >
+        <Button type="button" variant="text" onClick={() => setOpen(true)}>
+          <img
+            css={css`
+              width: 60px;
+              height: 60px;
+              border-radius: 50%;
+            `}
+            src={ProfileExample}
+            alt="user"
+          />
+        </Button>
+        <div
+          css={css`
+            width: 192px;
+            height: 60px;
+            padding: 12px;
+            color: ${theme.palette.gray[100]};
+            font-size: 13px;
+            font-style: normal;
+            font-weight: 274;
+            line-height: 140%;
+            letter-spacing: -0.052px;
+            white-space: pre-wrap;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow:
+              0px 0px 1px 0px rgba(57, 63, 73, 0.31),
+              0px 3px 5px 0px rgba(56, 61, 69, 0.2);
+          `}
+        >
+          text text text text text text text text text text text text text text
+          text text text text text text text text text text text text
+        </div>
+      </div>
+      <UserProfileModal isOpen={isOpen} onClose={() => setOpen(false)} />
       <div
         css={css`
           height: 395px;
@@ -146,7 +204,7 @@ const Card: FC<CardProps> = ({ person, restaurant, images }) => {
           line-height: 20px;
         `}
       >
-        See menu
+        See all menu
         <ChevronRightIcon />
       </Button>
     </TinderCard>
