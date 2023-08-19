@@ -11,3 +11,10 @@ class RestaurantDto(BaseModel):
     pictures: list[str]
     created_at: datetime
     updated_at: datetime
+
+
+class CreateRestaurantDto(BaseModel):
+    name: str
+    longitude: float
+    latitude: float
+    pictures: list[str]

@@ -54,8 +54,6 @@ model Notification {
 model Restaurant {
     id        Int      @id @default(autoincrement())
     name      String
-    address   String
-    phone     String
     longitude Float
     latitude  Float
     pictures  String[]
@@ -79,7 +77,8 @@ model Card {
     restaurant_id Int
     user          User       @relation(fields: [user_id], references: [id])
     user_id       String
-    status        CardStatus
+    message       String
+    status        CardStatus @default(WAITING)
 
     created_at DateTime  @default(now())
     updated_at DateTime  @default(now()) @updatedAt
