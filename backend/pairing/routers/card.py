@@ -1,10 +1,11 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, Security
+from prisma.enums import UserCardStatus
 
 from pairing.auth import get_current_user, scheme
 from pairing.db import from_prisma_model, get_transaction
-from pairing.dtos.card import CardDto, CreateCardDto
+from pairing.dtos.card import CardDto, CardDtoWithUserCardStatus, CreateCardDto
 from pairing.dtos.restaurant import CreateRestaurantDto, RestaurantDto
 from pairing.dtos.user import UserDto
 from pairing.services.card import service as card_service
@@ -20,8 +21,15 @@ async def get_cards(
     db: Annotated[Prisma, Depends(get_transaction)],
     user: UserDto = Security(get_current_user),
 ) -> list[CardDto]:
-    card = await card_service.get_cards(db, user.id)
-    return from_prisma_model(card, CardDto)
+    cards = await card_service.get_cards(db, user.id)
+    filtered_cards = []
+    for card in cards:
+        user_card = await card_service.get_user_card(db, user.id, card.id)
+        card_dto = from_prisma_model(card, CardDtoWithUserCardStatus)
+        if not user_card:
+            filtered_cards.append(card_dto)
+
+    return from_prisma_model(filtered_cards, CardDto)
 
 
 @router.get("/{card_id}")
@@ -29,9 +37,39 @@ async def get_card(
     card_id: int,
     db: Annotated[Prisma, Depends(get_transaction)],
     user: UserDto = Security(get_current_user),
-) -> list[CardDto]:
+) -> list[CardDtoWithUserCardStatus]:
     card = await card_service.get_card(db, user.id, card_id)
-    return from_prisma_model(card, CardDto)
+    user_card = await card_service.get_user_card(db, user.id, card_id)
+    card_dto = from_prisma_model(card, CardDtoWithUserCardStatus)
+    if user_card:
+        card_dto.user_card_status = user_card.status
+    return card_dto
+
+
+@router.post("/{card_id}/approve")
+async def accept_card(
+    card_id: int,
+    db: Annotated[Prisma, Depends(get_transaction)],
+    user: UserDto = Security(get_current_user),
+) -> CardDtoWithUserCardStatus:
+    user_card = await card_service.change_user_card_status(db, user.id, card_id, UserCardStatus.APPROVED)
+    card = await db.card.find_unique(where={"id": card_id}, include={"restaurant": True, "user": True})
+    card_dto = from_prisma_model(card, CardDtoWithUserCardStatus)
+    card_dto.user_card_status = user_card.status
+    return card_dto
+
+
+@router.post("/{card_id}/ignore")
+async def ignore_card(
+    card_id: int,
+    db: Annotated[Prisma, Depends(get_transaction)],
+    user: UserDto = Security(get_current_user),
+) -> CardDto:
+    user_card = await card_service.change_user_card_status(db, user.id, card_id, UserCardStatus.IGNORED)
+    card = await db.card.find_unique(where={"id": card_id}, include={"restaurant": True, "user": True})
+    card_dto = from_prisma_model(card, CardDtoWithUserCardStatus)
+    card_dto.user_card_status = user_card.status
+    return card_dto
 
 
 @router.post("")

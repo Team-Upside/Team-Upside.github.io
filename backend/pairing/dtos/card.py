@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from prisma.enums import CardStatus
+from prisma.enums import CardStatus, UserCardStatus
 from pydantic import BaseModel
 
 from .restaurant import RestaurantDto
@@ -20,3 +20,7 @@ class CardDto(BaseModel):
     status: CardStatus
     created_at: datetime
     updated_at: datetime
+
+
+class CardDtoWithUserCardStatus(CardDto):
+    user_card_status: UserCardStatus | None = None
