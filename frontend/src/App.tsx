@@ -14,6 +14,7 @@ import { AxiosProvider } from './common/AxiosContext';
 import ChatListPage from './pages/ChatListPage';
 import RequiredAuth from './common/components/RequiredAuth';
 import ChatPage from './pages/ChatPage';
+import PostPage from './pages/PostPage';
 
 const queryClient = new QueryClient();
 
@@ -47,6 +48,7 @@ const App: FC = () => (
                     <Route path="/" element={<MainPage />} />
                     <Route path="/chat" element={<ChatListPage />} />
                     <Route path="/chat/:id" element={<ChatPage />} />
+                    <Route path="/post" element={<PostPage />} />
                   </Route>
                   <Route path="/login" element={<LoginPage />} />
                   <Route

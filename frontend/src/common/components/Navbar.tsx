@@ -6,8 +6,11 @@ import { Button, IconButton } from '@mui/material';
 import { ReactComponent as NotificationIcon } from '../../assets/icons/notification.svg';
 import { ReactComponent as UserFavoriteIcon } from '../../assets/icons/user-favorite.svg';
 import { ReactComponent as PlusIcon } from '../../assets/icons/plus.svg';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
+  const navigate = useNavigate();
+
   return (
     <AppBar
       position="absolute"
@@ -50,6 +53,7 @@ const Navbar = () => {
               0px 1px 3px 0px rgba(0, 0, 0, 0.3),
               0px 4px 8px 3px rgba(0, 0, 0, 0.15);
           `}
+          onClick={() => navigate(`/post?restaurant_id=1`)}
         >
           <PlusIcon />
         </Button>
