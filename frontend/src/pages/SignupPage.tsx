@@ -45,7 +45,6 @@ const SignupPage: FC = () => {
 
   const handleClickCreateUser = useCallback(async () => {
     const token = await getAccessTokenSilently();
-    console.log(token);
     await createUser({ token, request: signupRequest });
     navigate('/');
   }, [createUser, navigate, signupRequest]);
