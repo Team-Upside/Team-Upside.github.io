@@ -10,15 +10,19 @@ import FavoriteFoodStep from '../signup/components/FavoriteFoodStep';
 import ProfileImageStep from '../signup/components/ProfileImageStep';
 import { SIGNUP_TITLES } from '../signup/constants';
 import { useSignupContext } from '../signup/contexts/SignupContext';
+import LocationShareStep from '../signup/components/LocationShareStep';
+import { useNavigate } from 'react-router-dom';
 
 const SignupPage: FC = () => {
+  const navigate = useNavigate();
+
   const [step, setStep] = useState(0);
 
   const { validateBirthdate, validateNickname } = useSignupContext();
 
   const theme = useTheme();
 
-  const isSkipable = step >= 3;
+  const isSkipable = step >= 3 && step !== 7;
 
   const disabledRequiredButton = useMemo(
     () =>
@@ -79,14 +83,40 @@ const SignupPage: FC = () => {
           padding-bottom: 40px;
         `}
       >
-        <div>
+        <div
+          css={css`
+            height: 100%;
+          `}
+        >
           <h1
             css={css`
-              margin-bottom: 35px;
+              font-size: 18px;
+              font-style: normal;
+              font-weight: 590;
+              line-height: 140%; /* 25.2px */
+              letter-spacing: -0.072px;
+              margin-bottom: ${step >= 6 ? '6px' : '35px'};
             `}
           >
             {SIGNUP_TITLES[step]}
           </h1>
+          {step >= 6 && (
+            <p
+              css={css`
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 274;
+                line-height: 140%; /* 19.6px */
+                letter-spacing: -0.056px;
+                color: ${theme.palette.gray[60]};
+                margin-bottom: ${step >= 6 ? '35px' : undefined};
+              `}
+            >
+              {step === 6
+                ? 'Add the picture which represents you the best'
+                : 'Share your location and meet your neighborhoods around you'}
+            </p>
+          )}
           {step === 0 && <NicknameStep />}
           {step === 1 && <BirthdateStep />}
           {step === 2 && <GenderStep />}
@@ -94,14 +124,15 @@ const SignupPage: FC = () => {
           {step === 4 && <InterestStep />}
           {step === 5 && <FavoriteFoodStep />}
           {step === 6 && <ProfileImageStep />}
+          {step === 7 && <LocationShareStep />}
         </div>
         <Button
           variant="contained"
-          onClick={handleClickNextStep}
+          onClick={step !== 7 ? handleClickNextStep : () => navigate('/swipe')}
           disabled={disabledRequiredButton}
           size="large"
         >
-          Continued
+          {step !== 7 ? 'Continued' : 'Allow'}
         </Button>
       </div>
     </div>
