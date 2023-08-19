@@ -47,7 +47,6 @@ const ChatListPage = () => {
           Wade
         </h1>
       </div>
-
       <div
         css={css`
           padding: 0 20px;
@@ -55,7 +54,7 @@ const ChatListPage = () => {
           position: relative;
           justify-content: center;
           align-items: center;
-          height: 50px;
+          height: 70px;
           border-bottom: 1px solid ${theme.palette.gray[20]};
         `}
       >
