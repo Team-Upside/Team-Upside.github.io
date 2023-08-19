@@ -125,7 +125,7 @@ const SignupPage: FC = () => {
               `}
             >
               {step === 6
-                ? 'Add the picture which represents you the best'
+                ? 'Add an picture which represents you well'
                 : 'Share your location and meet your neighborhoods around you'}
             </p>
           )}

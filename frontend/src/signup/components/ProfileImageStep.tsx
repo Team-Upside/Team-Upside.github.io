@@ -1,7 +1,8 @@
 import { ChangeEvent, FC, memo, useCallback, useId, useState } from 'react';
 import { css } from '@emotion/react';
-import { useTheme } from '@mui/material';
+import { IconButton, useTheme } from '@mui/material';
 import { ReactComponent as AddIcon } from '../../assets/icons/add.svg';
+import { ReactComponent as CloseIcon } from '../../assets/icons/close.svg';
 
 const ProfileImageStep: FC = () => {
   const fileId = useId();
@@ -41,11 +42,13 @@ const ProfileImageStep: FC = () => {
     [readFileAsync, setPreviewImage]
   );
 
+  console.log(file, previewImage);
   return (
     <div>
       <label
         htmlFor={fileId}
         css={css`
+          position: relative;
           display: flex;
           width: 100px;
           height: 120px;
@@ -61,14 +64,34 @@ const ProfileImageStep: FC = () => {
           background-size: contain;
           background-repeat: no-repeat;
           background-position: center;
+          cursor: pointer;
         `}
       >
         {!previewImage ? <AddIcon /> : null}
+        {previewImage && (
+          <IconButton
+            onClick={(e) => {
+              e.preventDefault();
+              setFile(null);
+              setPreviewImage(null);
+            }}
+            css={css`
+              position: absolute;
+              top: -6px;
+              right: -6px;
+              padding: 0;
+              z-index: 2;
+            `}
+          >
+            <CloseIcon />
+          </IconButton>
+        )}
       </label>
       <input
         type="file"
         id={fileId}
         onChange={handleChange}
+        accept="image/*"
         css={css`
           display: none;
         `}
