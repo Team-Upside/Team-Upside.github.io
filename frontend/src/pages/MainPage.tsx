@@ -67,7 +67,7 @@ const MainPage = () => {
       <Navbar />
       <div
         css={css`
-          margin-top: 12px;
+          padding-top: 12px;
           display: flex;
           justify-content: center;
         `}
