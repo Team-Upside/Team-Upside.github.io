@@ -8,35 +8,39 @@ import { AuthProvider } from './common/auth';
 import LoginPage from './pages/LoginPage';
 import MainPage from './pages/MainPage';
 import SignupPage from './pages/SignupPage';
+import { ThemeProvider } from '@mui/material';
+import { theme } from './styles/theme';
 
 const queryClient = new QueryClient();
 
 const App: FC = () => (
   <StrictMode>
     <Global styles={globalStyles} />
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <div
-          css={css`
-            margin: 0 auto;
-            background-color: white;
-            min-width: 360px;
-            max-width: 430px;
-            position: relative;
-            overflow: hidden;
-          `}
-        >
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<MainPage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/signup" element={<SignupPage />} />
-              <Route path="/swipe" element={<Swipe />} />
-            </Routes>
-          </BrowserRouter>
-        </div>
-      </AuthProvider>
-    </QueryClientProvider>
+    <ThemeProvider theme={theme}>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <div
+            css={css`
+              margin: 0 auto;
+              background-color: white;
+              min-width: 360px;
+              max-width: 430px;
+              position: relative;
+              overflow: hidden;
+            `}
+          >
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<MainPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/signup" element={<SignupPage />} />
+                <Route path="/swipe" element={<Swipe />} />
+              </Routes>
+            </BrowserRouter>
+          </div>
+        </AuthProvider>
+      </QueryClientProvider>
+    </ThemeProvider>
   </StrictMode>
 );
 
