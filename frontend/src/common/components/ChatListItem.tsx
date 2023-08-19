@@ -1,5 +1,5 @@
 import { Avatar, ButtonBase, useTheme } from '@mui/material';
-import sampleProfile from '../../assets/sample-profile.png';
+import AgentIcon from '../../assets/icons/agent.svg';
 import { css } from '@emotion/react';
 import { FC, memo } from 'react';
 import { Link } from 'react-router-dom';
@@ -27,10 +27,11 @@ const ChatListItem: FC<ChatListItemProps> = ({ chatroom }) => {
     >
       <Avatar
         alt=""
-        src={chatroom.opponent_user.profile ?? sampleProfile}
+        src={chatroom.opponent_user.profile ?? AgentIcon}
         css={css`
           width: 44px;
           height: 44px;
+          border-radius: 30px;
         `}
       />
       <div

@@ -46,7 +46,7 @@ const Navbar = () => {
             height: 56px;
             border-radius: 16px;
           `}
-          onClick={() => navigate(`/post?restaurant_id=1`)}
+          onClick={() => navigate('/post')}
           disableElevation
         >
           <PlusIcon />
