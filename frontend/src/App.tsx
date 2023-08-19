@@ -13,6 +13,7 @@ import { Auth0Provider } from '@auth0/auth0-react';
 import { AxiosProvider } from './common/AxiosContext';
 import ChatListPage from './pages/ChatListPage';
 import RequiredAuth from './common/components/RequiredAuth';
+import ChatPage from './pages/ChatPage';
 
 const queryClient = new QueryClient();
 
@@ -45,6 +46,7 @@ const App: FC = () => (
                   <Route element={<RequiredAuth />}>
                     <Route path="/" element={<MainPage />} />
                     <Route path="/chat" element={<ChatListPage />} />
+                    <Route path="/chat/:id" element={<ChatPage />} />
                   </Route>
                   <Route path="/login" element={<LoginPage />} />
                   <Route
