@@ -10,6 +10,7 @@ from starlette.middleware.sessions import SessionMiddleware
 from .db import connect, disconnect
 from .errors import ServerRequestError
 from .routers.example import router as example_router
+from .routers.restaurant import router as restaurant_router
 from .routers.user import router as user_router
 
 
@@ -39,6 +40,11 @@ def create_app():
         user_router,
         prefix="/users",
         tags=["User"],
+    )
+    app.include_router(
+        restaurant_router,
+        prefix="/restaurants",
+        tags=["Restaurant"],
     )
 
     @app.on_event("startup")

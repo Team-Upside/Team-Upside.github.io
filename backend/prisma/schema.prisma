@@ -27,11 +27,11 @@ model User {
     profile       String?
     metadata      Json    @default("{}")
 
-    created_at   DateTime       @default(now())
-    updated_at   DateTime       @default(now()) @updatedAt
-    Notification Notification[]
-    Card         Card[]
-    Pairing      Pairing[]
+    created_at    DateTime       @default(now())
+    updated_at    DateTime       @default(now()) @updatedAt
+    notifications Notification[]
+    cards         Card[]
+    pairings      Pairing[]
 
     @@map("user")
 }
@@ -62,7 +62,7 @@ model Restaurant {
 
     created_at DateTime @default(now())
     updated_at DateTime @default(now()) @updatedAt
-    Card       Card[]
+    cards      Card[]
 
     @@map("restaurant")
 }
@@ -101,9 +101,9 @@ model Pairing {
     card_id Int
     status  PairingStatus
 
-    created_at   DateTime       @default(now())
-    updated_at   DateTime       @default(now()) @updatedAt
-    Notification Notification[]
+    created_at    DateTime       @default(now())
+    updated_at    DateTime       @default(now()) @updatedAt
+    notifications Notification[]
 
     @@map("pairing")
 }
