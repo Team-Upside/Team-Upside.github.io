@@ -1,4 +1,4 @@
-import { Button, LinearProgress } from '@mui/material';
+import { Button, LinearProgress, useTheme } from '@mui/material';
 import { FC, memo, useCallback, useMemo, useState } from 'react';
 import { css } from '@emotion/react';
 import NicknameStep from '../signup/components/NicknameStep';
@@ -15,6 +15,8 @@ const SignupPage: FC = () => {
   const [step, setStep] = useState(0);
 
   const { nickname, birthdate } = useSignupContext();
+
+  const theme = useTheme();
 
   const isSkipable = step >= 3;
 
@@ -46,6 +48,7 @@ const SignupPage: FC = () => {
           margin-top: 8px;
           height: 8px;
           border-radius: 8px;
+          background-color: ${theme.palette.gray[10]};
         `}
       />
       {isSkipable ? (
