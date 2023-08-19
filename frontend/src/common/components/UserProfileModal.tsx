@@ -91,6 +91,7 @@ const UserProfileModal: FC<Props> = ({ isOpen, onClose, user }) => {
                 height: 180px;
                 border: 1px solid;
                 border-color: ${theme.palette.gray[20]};
+                border-radius: 50%;
               `}
             />
             <div
