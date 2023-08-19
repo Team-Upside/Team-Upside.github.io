@@ -99,6 +99,7 @@ const SignupPage: FC = () => {
           variant="contained"
           onClick={handleClickNextStep}
           disabled={disabledRequiredButton}
+          size="large"
         >
           Continued
         </Button>
