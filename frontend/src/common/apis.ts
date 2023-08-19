@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import { CreateUserDto, UserDto } from './types';
 
 const unauthorizedAxiosInstance = axios.create({
@@ -10,15 +10,7 @@ export const getMeApi = async (token: string) => {
     'Authorization'
   ] = `Bearer ${token}`;
 
-  try {
-    return await unauthorizedAxiosInstance.get<UserDto>('/users/me');
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      if (error.response?.status === 403) {
-        window.location.href = '/signup';
-      }
-    }
-  }
+  return await unauthorizedAxiosInstance.get<UserDto>('/users/me');
 };
 
 export const createUserApi = async ({
