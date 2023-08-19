@@ -1,19 +1,11 @@
-import {
-  FC,
-  memo,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { FC, memo, useCallback, useEffect, useRef, useState } from 'react';
 import { css } from '@emotion/react';
-import { Button, IconButton, useTheme } from '@mui/material';
+import { Button, IconButton, MenuItem, Select, useTheme } from '@mui/material';
 import { ReactComponent as CloseIcon } from '../assets/icons/close-plain.svg';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useAxios } from '../common/AxiosContext';
-import { CardDto, CreateCardDto } from '../cards/types';
+import { CardDto, CreateCardDto, RestaurantDto } from '../cards/types';
 
 const PostPage: FC = () => {
   const theme = useTheme();
@@ -23,14 +15,17 @@ const PostPage: FC = () => {
   const axios = useAxios();
 
   const navigate = useNavigate();
-  const { search } = useLocation();
-  const params = new URLSearchParams(search);
-  const restaurant_id = useMemo(
-    () => Number(params.get('restaurant_id')) ?? null,
-    [params]
-  );
 
   const [message, setMessage] = useState<string>('');
+  const [selectedRestaurantId, setSelectedRestaurantId] = useState<number>(-1);
+
+  const { data: restaurants } = useQuery({
+    queryKey: ['restaurants'],
+    queryFn: async () => {
+      const { data } = await axios.get<RestaurantDto[]>('/restaurants');
+      return data ?? [];
+    },
+  });
 
   useEffect(() => {
     textareaRef.current?.focus();
@@ -42,17 +37,20 @@ const PostPage: FC = () => {
     },
   });
   const handleSubmitCard = useCallback(async () => {
-    if (!restaurant_id) {
+    if (selectedRestaurantId === -1) {
       return;
     }
 
     try {
-      await mutateAsync({ restaurant_id: Number(restaurant_id), message });
+      await mutateAsync({
+        restaurant_id: selectedRestaurantId,
+        message,
+      });
       navigate('/');
     } catch (error) {
       // do something
     }
-  }, [restaurant_id, mutateAsync, message]);
+  }, [selectedRestaurantId, mutateAsync, message]);
 
   return (
     <div
@@ -105,6 +103,19 @@ const PostPage: FC = () => {
           padding: 24px 20px;
         `}
       >
+        <Select
+          value={selectedRestaurantId}
+          onChange={(e) => setSelectedRestaurantId(Number(e.target.value))}
+          css={css`
+            margin-bottom: 24px;
+          `}
+        >
+          {restaurants?.map(({ id, name }) => (
+            <MenuItem key={id} value={id}>
+              {name}
+            </MenuItem>
+          ))}
+        </Select>
         <textarea
           ref={textareaRef}
           value={message}
