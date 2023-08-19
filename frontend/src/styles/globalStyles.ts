@@ -11,7 +11,7 @@ const globalStyles = css`
     font-family: monospace;
   }
   html {
-    overflow: hidden;
+    background-color: black;
   }
 `;
 
