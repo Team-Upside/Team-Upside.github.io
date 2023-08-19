@@ -19,7 +19,7 @@ const cardStyle = css`
   overflow: hidden;
 `;
 
-const Swipe = () => {
+const SwipePage = () => {
   const [people, setPeople] = useState([
     {
       name: 'Elon Musk',
@@ -78,4 +78,4 @@ const Swipe = () => {
   );
 };
 
-export default memo(Swipe);
+export default memo(SwipePage);
