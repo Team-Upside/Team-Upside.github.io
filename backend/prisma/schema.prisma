@@ -1,0 +1,110 @@
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider             = "prisma-client-py"
+    interface            = "asyncio"
+    recursive_type_depth = 5
+    previewFeatures      = ["postgresqlExtensions"]
+}
+
+enum Gender {
+    MALE
+    FEMALE
+    OTHERS
+}
+
+model User {
+    id            Int      @id @default(autoincrement())
+    email         String
+    nickname      String
+    birthdate     DateTime
+    gender        Gender
+    mbti          String?
+    interest      String?
+    favorite_food String?
+    profile       String?
+    metadata      Json     @default("{}")
+
+    created_at   DateTime       @default(now())
+    updated_at   DateTime       @default(now()) @updatedAt
+    Notification Notification[]
+    Card         Card[]
+    Pairing      Pairing[]
+
+    @@unique([email, nickname])
+    @@map("user")
+}
+
+model Notification {
+    id            Int     @id @default(autoincrement())
+    user          User    @relation(fields: [user_id], references: [id])
+    user_id       Int
+    resource_type String
+    resource_id   Int
+    message       String
+    read          Boolean @default(false)
+
+    created_at DateTime @default(now())
+    updated_at DateTime @default(now()) @updatedAt
+
+    @@map("notification")
+}
+
+model Restaurant {
+    id        Int      @id @default(autoincrement())
+    name      String
+    address   String
+    phone     String
+    longitude Float
+    latitude  Float
+    pictures  String[]
+
+    created_at DateTime @default(now())
+    updated_at DateTime @default(now()) @updatedAt
+    Card       Card[]
+
+    @@map("restaurant")
+}
+
+enum CardStatus {
+    WAITING
+    MATCHED
+    CANCELED
+}
+
+model Card {
+    id            Int        @id @default(autoincrement())
+    restaurant    Restaurant @relation(fields: [restaurant_id], references: [id])
+    restaurant_id Int
+    user          User       @relation(fields: [user_id], references: [id])
+    user_id       Int
+    status        CardStatus
+
+    created_at DateTime  @default(now())
+    updated_at DateTime  @default(now()) @updatedAt
+    Pairing    Pairing[]
+
+    @@map("menu")
+}
+
+enum PairingStatus {
+    APPROVED
+    REJECTED
+}
+
+model Pairing {
+    id      Int           @id @default(autoincrement())
+    user    User          @relation(fields: [user_id], references: [id])
+    user_id Int
+    card    Card          @relation(fields: [card_id], references: [id])
+    card_id Int
+    status  PairingStatus
+
+    created_at DateTime @default(now())
+    updated_at DateTime @default(now()) @updatedAt
+
+    @@map("pairing")
+}
