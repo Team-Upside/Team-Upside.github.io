@@ -3,13 +3,19 @@ import { css } from '@emotion/react';
 import { IconButton, useTheme } from '@mui/material';
 import { ReactComponent as AddIcon } from '../../assets/icons/add.svg';
 import { ReactComponent as CloseIcon } from '../../assets/icons/close.svg';
+import { useAxios } from '../../common/AxiosContext';
+import { useSignupDispatchContext } from '../contexts/SignupContext';
+import { UserDto } from '../../common/types';
 
 const ProfileImageStep: FC = () => {
   const fileId = useId();
 
+  const axios = useAxios();
   const theme = useTheme();
 
-  const [file, setFile] = useState<File | null>(null);
+  const { setProfileImage } = useSignupDispatchContext();
+
+  const [, setFile] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   const readFileAsync = useCallback((file: File | null) => {
@@ -35,6 +41,20 @@ const ProfileImageStep: FC = () => {
       try {
         const fileUrl = await readFileAsync(file);
         setPreviewImage(fileUrl);
+
+        const {
+          data: { profile },
+        } = await axios.post<{ file: File }, { data: UserDto }>(
+          '/users/profile',
+          { file },
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        );
+
+        setProfileImage(profile ?? '');
       } catch (error) {
         // do something
       }
@@ -42,7 +62,6 @@ const ProfileImageStep: FC = () => {
     [readFileAsync, setPreviewImage]
   );
 
-  console.log(file, previewImage);
   return (
     <div>
       <label
