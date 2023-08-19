@@ -1,0 +1,10 @@
+# dev dependency
+isort
+black
+flake8
+
+pytest
+pytest-asyncio
+pytest-cov
+
+coveralls
