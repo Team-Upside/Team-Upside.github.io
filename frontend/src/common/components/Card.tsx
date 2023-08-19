@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { FC, memo } from 'react';
+import { FC, memo, useState } from 'react';
 import TinderCard from 'react-tinder-card';
 import { theme } from '../../styles/theme';
 import { Button, useTheme } from '@mui/material';
@@ -18,6 +18,9 @@ const cardStyle = css`
   border-radius: 20px;
   overflow: hidden;
   padding: 11px 11px 23px 11px;
+  * {
+    user-select: none;
+  }
 `;
 
 const titleStyle = css`
@@ -59,6 +62,9 @@ const Card: FC<CardProps> = ({ person, restaurant, images }) => {
   const outOfFrame = (name: string) => {
     console.log(name + ' left the screen!');
   };
+
+  const [imageIndex, setImageIndex] = useState(0);
+
   return (
     <TinderCard
       css={cardStyle}
@@ -68,12 +74,53 @@ const Card: FC<CardProps> = ({ person, restaurant, images }) => {
     >
       <div
         css={css`
-          background-image: url(${images[0]});
-          background-size: cover;
           height: 395px;
           border-radius: 20px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          overflow: hidden;
+          position: relative;
         `}
-      />
+        onClick={() => setImageIndex((imageIndex + 1) % images.length)}
+      >
+        <div
+          css={css`
+            width: 100%;
+            height: 100%;
+            background-image: url(${images[imageIndex]});
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+          `}
+        />
+        <div
+          css={css`
+            position: absolute;
+            width: 100%;
+            height: 5px;
+            display: flex;
+            justify-content: space-between;
+            gap: 4px;
+            bottom: 14px;
+            padding: 0 17px;
+          `}
+        >
+          {images.map((image, index) => (
+            <div
+              key={image}
+              css={css`
+                flex: 1;
+                height: 100%;
+                background-color: ${index === imageIndex
+                  ? theme.palette.primary.main
+                  : theme.palette.gray[10]};
+                border-radius: 300px;
+              `}
+            />
+          ))}
+        </div>
+      </div>
       <div
         css={css`
           display: flex;
