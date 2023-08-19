@@ -33,7 +33,7 @@ const UserProfileModal: FC<Props> = ({ isOpen, onClose, user }) => {
     const diffInMonth = TODAY.getMonth() - new Date(birthdate).getMonth();
 
     if (diffInMonth < 0) {
-      return baseAge;
+      return baseAge - 1;
     }
     return baseAge;
   }, [birthdate]);
