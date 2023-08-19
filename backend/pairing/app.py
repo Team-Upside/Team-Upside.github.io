@@ -10,6 +10,7 @@ from starlette.middleware.sessions import SessionMiddleware
 from .db import connect, disconnect
 from .errors import ServerRequestError
 from .routers.card import router as card_router
+from .routers.chat import router as chat_router
 from .routers.example import router as example_router
 from .routers.restaurant import router as restaurant_router
 from .routers.user import router as user_router
@@ -51,6 +52,11 @@ def create_app():
         card_router,
         prefix="/cards",
         tags=["Card"],
+    )
+    app.include_router(
+        chat_router,
+        prefix="/chatrooms",
+        tags=["Chat"],
     )
 
     @app.on_event("startup")

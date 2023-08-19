@@ -31,6 +31,8 @@ model User {
     updated_at DateTime   @default(now()) @updatedAt
     cards      Card[]
     user_cards UserCard[]
+    chatrooms  ChatRoom[]
+    chats      Chat[]
 
     @@map("user")
 }
@@ -42,9 +44,10 @@ model Restaurant {
     latitude  Float
     pictures  String[]
 
-    created_at DateTime @default(now())
-    updated_at DateTime @default(now()) @updatedAt
+    created_at DateTime   @default(now())
+    updated_at DateTime   @default(now()) @updatedAt
     cards      Card[]
+    chatrooms  ChatRoom[]
 
     @@map("restaurant")
 }
@@ -87,4 +90,31 @@ model UserCard {
 
     @@id([user_id, card_id])
     @@map("user_card")
+}
+
+model ChatRoom {
+    id            Int        @id @default(autoincrement())
+    restaurant    Restaurant @relation(fields: [restaurant_id], references: [id])
+    restaurant_id Int
+    users         User[]
+
+    created_at DateTime @default(now())
+    updated_at DateTime @default(now()) @updatedAt
+    chats      Chat[]
+
+    @@map("chat_room")
+}
+
+model Chat {
+    id           Int      @id @default(autoincrement())
+    chat_room    ChatRoom @relation(fields: [chat_room_id], references: [id])
+    chat_room_id Int
+    user         User     @relation(fields: [user_id], references: [id])
+    user_id      String
+    message      String
+    read         Boolean  @default(false)
+
+    created_at DateTime @default(now())
+
+    @@map("chat")
 }

@@ -9,6 +9,7 @@ from pairing.dtos.card import CardDto, CardDtoWithUserCardStatus, CreateCardDto
 from pairing.dtos.restaurant import CreateRestaurantDto, RestaurantDto
 from pairing.dtos.user import UserDto
 from pairing.services.card import service as card_service
+from pairing.services.chat import service as chat_service
 from prisma import Prisma
 
 router = APIRouter(
@@ -56,6 +57,10 @@ async def accept_card(
     card = await db.card.find_unique(where={"id": card_id}, include={"restaurant": True, "user": True})
     card_dto = from_prisma_model(card, CardDtoWithUserCardStatus)
     card_dto.user_card_status = user_card.status
+
+    chatroom = await chat_service.create_chatroom(db, user.id, card.user.id, card.restaurant.id)
+    await chat_service.chat(db, chatroom.id, card.user.id, card.message)
+
     return card_dto
 
 
