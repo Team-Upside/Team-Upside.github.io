@@ -90,23 +90,25 @@ const ChatListItem: FC<ChatListItemProps> = ({ chatroom }) => {
           >
             {chatroom.last_message}
           </p>
-          <div
-            css={css`
-              width: 16px;
-              height: 16px;
-              background-color: ${theme.palette.primary.main};
-              border-radius: 50%;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              color: white;
-              font-size: 10px;
-              font-weight: 400;
-              line-height: 12px;
-            `}
-          >
-            {chatroom.unread_count}
-          </div>
+          {chatroom.unread_count > 0 && (
+            <div
+              css={css`
+                width: 16px;
+                height: 16px;
+                background-color: ${theme.palette.primary.main};
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: white;
+                font-size: 10px;
+                font-weight: 400;
+                line-height: 12px;
+              `}
+            >
+              {chatroom.unread_count}
+            </div>
+          )}
         </div>
       </div>
     </ButtonBase>
