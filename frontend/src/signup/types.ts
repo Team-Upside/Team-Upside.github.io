@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
-import { Gender } from '../common/types';
+import { Gender, MBTI } from '../common/types';
 
 export interface SignupProps {
   signupState: SignupState;
@@ -10,7 +10,7 @@ export interface SignupState {
   nickname: string;
   birthdate: string;
   gender: Gender;
-  mbti?: string;
+  mbti?: MBTI;
   interest?: string;
   favoriteFood?: string;
   profileImage?: string;

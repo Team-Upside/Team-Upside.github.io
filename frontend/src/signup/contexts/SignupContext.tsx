@@ -7,7 +7,7 @@ import {
   useState,
 } from 'react';
 import { SignupState } from '../types';
-import { Gender } from '../../common/types';
+import { Gender, MBTI } from '../../common/types';
 import { produce } from 'immer';
 
 const initialState: SignupState = {
@@ -32,7 +32,7 @@ const SignupDispatchContext = createContext<{
   setNickname: Dispatch<string>;
   setBirthdate: Dispatch<string>;
   setGender: Dispatch<Gender>;
-  setMBTI: Dispatch<string>;
+  setMBTI: Dispatch<MBTI>;
   setInterest: Dispatch<string>;
   setFavoriteFood: Dispatch<string>;
   setProfileImage: Dispatch<string>;
@@ -70,7 +70,7 @@ const SignupProvider = ({ children }: { children: ReactNode }) => {
             return draft;
           })
         ),
-      setMBTI: (mbti: string) =>
+      setMBTI: (mbti: MBTI) =>
         setSignupState(
           produce((draft) => {
             if (draft) {
