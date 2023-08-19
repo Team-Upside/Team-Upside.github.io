@@ -1,8 +1,11 @@
 import { FC, memo } from 'react';
-import { SignupProps } from '../types';
 import { Button } from '@mui/material';
 import { css } from '@emotion/react';
 import { Gender } from '../../common/types';
+import {
+  useSignupContext,
+  useSignupDispatchContext,
+} from '../contexts/SignupContext';
 
 const buttonStyle = (selected?: boolean) => css`
   flex: 1;
@@ -10,7 +13,10 @@ const buttonStyle = (selected?: boolean) => css`
   background-color: ${selected ? '#FFF2E8' : 'white'};
 `;
 
-const GenderStep: FC<SignupProps> = ({ signupState, setSignupState }) => {
+const GenderStep: FC = () => {
+  const { gender } = useSignupContext();
+  const { setGender } = useSignupDispatchContext();
+
   return (
     <div
       css={css`
@@ -23,13 +29,8 @@ const GenderStep: FC<SignupProps> = ({ signupState, setSignupState }) => {
         variant="outlined"
         type="button"
         size="large"
-        css={buttonStyle(signupState.gender === Gender.Male)}
-        onClick={() =>
-          setSignupState((prev) => ({
-            ...prev,
-            gender: Gender.Male,
-          }))
-        }
+        css={buttonStyle(gender === Gender.Male)}
+        onClick={() => setGender(Gender.Male)}
       >
         Male
       </Button>
@@ -37,13 +38,8 @@ const GenderStep: FC<SignupProps> = ({ signupState, setSignupState }) => {
         variant="outlined"
         type="button"
         size="large"
-        css={buttonStyle(signupState.gender === Gender.Female)}
-        onClick={() =>
-          setSignupState((prev) => ({
-            ...prev,
-            gender: Gender.Female,
-          }))
-        }
+        css={buttonStyle(gender === Gender.Female)}
+        onClick={() => setGender(Gender.Female)}
       >
         Female
       </Button>
@@ -51,13 +47,8 @@ const GenderStep: FC<SignupProps> = ({ signupState, setSignupState }) => {
         variant="outlined"
         type="button"
         size="large"
-        css={buttonStyle(signupState.gender === Gender.Others)}
-        onClick={() =>
-          setSignupState((prev) => ({
-            ...prev,
-            gender: Gender.Others,
-          }))
-        }
+        css={buttonStyle(gender === Gender.Others)}
+        onClick={() => setGender(Gender.Others)}
       >
         Others
       </Button>

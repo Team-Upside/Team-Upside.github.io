@@ -1,19 +1,20 @@
 import { TextField, css } from '@mui/material';
 import { FC, memo } from 'react';
-import { SignupProps } from '../types';
+import {
+  useSignupContext,
+  useSignupDispatchContext,
+} from '../contexts/SignupContext';
 
-const FavoriteFoodStep: FC<SignupProps> = ({ setSignupState, signupState }) => {
+const FavoriteFoodStep: FC = () => {
+  const { favoriteFood } = useSignupContext();
+  const { setFavoriteFood } = useSignupDispatchContext();
+
   return (
     <TextField
       label={<span>Favorite Food</span>}
       variant="standard"
-      value={signupState.favoriteFood}
-      onChange={(e) =>
-        setSignupState((prev) => ({
-          ...prev,
-          favoriteFood: e.target.value,
-        }))
-      }
+      value={favoriteFood}
+      onChange={(e) => setFavoriteFood(e.target.value)}
       css={css`
         width: 100%;
       `}

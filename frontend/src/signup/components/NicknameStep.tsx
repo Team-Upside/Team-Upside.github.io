@@ -1,19 +1,20 @@
 import { TextField, css } from '@mui/material';
 import { FC, memo } from 'react';
-import { SignupProps } from '../types';
+import {
+  useSignupContext,
+  useSignupDispatchContext,
+} from '../contexts/SignupContext';
 
-const NicknameStep: FC<SignupProps> = ({ setSignupState, signupState }) => {
+const NicknameStep: FC = () => {
+  const { nickname } = useSignupContext();
+  const { setNickname } = useSignupDispatchContext();
+
   return (
     <TextField
-      label={<span>Nickname</span>}
+      label={<span>nickname</span>}
       variant="standard"
-      value={signupState.nickname}
-      onChange={(e) =>
-        setSignupState((prev) => ({
-          ...prev,
-          nickname: e.target.value,
-        }))
-      }
+      value={nickname}
+      onChange={(e) => setNickname(e.target.value)}
       css={css`
         width: 100%;
       `}
