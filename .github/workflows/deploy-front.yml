@@ -21,7 +21,7 @@ jobs:
           restore-keys: ${{ runner.os }}-npm-
 
       - name: Install dependencies
-        run: cd ./frontend && yarn ci
+        run: cd ./frontend && yarn install
 
       - name: Set environment variables
         run: |
