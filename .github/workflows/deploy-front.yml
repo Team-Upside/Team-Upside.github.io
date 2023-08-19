@@ -25,10 +25,10 @@ jobs:
 
       - name: Set environment variables
         run: |
-          echo "VITE_BACKEND_API_URL=${{ secrets.VITE_BACKEND_API_URL }}" >> ./frontend/.env
-          echo "VITE_AUTH0_DOMAIN=${{ secrets.VITE_AUTH0_DOMAIN }}" >> ./frontend/.env
-          echo "VITE_AUTH0_CLIENT_ID=${{ secrets.VITE_AUTH0_CLIENT_ID }}" >> ./frontend/.env
-          echo "VITE_AUTH0_AUDIENCE=${{ secrets.VITE_AUTH0_AUDIENCE }}" >> ./frontend/.env
+          echo "VITE_BACKEND_API_URL=https://1a0a1df653ff.ngrok.app" >> ./frontend/.env
+          echo "VITE_AUTH0_DOMAIN=dev-5dhyz47epja47fuj.us.auth0.com" >> ./frontend/.env
+          echo "VITE_AUTH0_CLIENT_ID=barRfNTk5fobafOwBSTv4rnyoDRIxDnn" >> ./frontend/.env
+          echo "VITE_AUTH0_AUDIENCE=https://pairing" >> ./frontend/.env
 
       - name: Building apps
         run: cd ./frontend && yarn build
