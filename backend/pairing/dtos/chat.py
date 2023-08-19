@@ -19,6 +19,7 @@ class ChatRoomWithOpponentAndUnreadCountDto(BaseModel):
     restaurant: RestaurantDto
     opponent_user: UserDto
     unread_count: int
+    last_message: str
     created_at: datetime
     updated_at: datetime
 

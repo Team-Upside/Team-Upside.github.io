@@ -37,12 +37,14 @@ async def get_chatroom(
         raise HTTPException(status_code=403, detail="You are not a member of this chatroom")
 
     unread_count = await chat_service.get_unread_chat_in_chatroom(db, id, user.id)
+    last_message = (await chat_service.get_chats(db, id))[-1].message
 
     return ChatRoomWithOpponentAndUnreadCountDto(
         id=chatroom_dto.id,
         restaurant=chatroom_dto.restaurant,
         opponent_user=get_opponent_user(chatroom_dto.users, user.id),
         unread_count=unread_count,
+        last_message=last_message,
         created_at=chatroom_dto.created_at,
         updated_at=chatroom_dto.updated_at,
     )
@@ -59,6 +61,7 @@ async def get_chatrooms(
             id=chatroom.id,
             restaurant=from_prisma_model(chatroom.restaurant, RestaurantDto),
             opponent_user=get_opponent_user([from_prisma_model(user, UserDto) for user in chatroom.users], user.id),
+            last_message=(await chat_service.get_chats(db, chatroom.id))[-1].message,
             unread_count=await chat_service.get_unread_chat_in_chatroom(db, chatroom.id, user.id),
             created_at=chatroom.created_at,
             updated_at=chatroom.updated_at,
