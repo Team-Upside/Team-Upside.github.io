@@ -1,19 +1,42 @@
-import { FC, memo } from 'react';
+import { FC, memo, useMemo } from 'react';
 import Sheet from 'react-modal-sheet';
 import { css } from '@emotion/react';
 import { IconButton, useTheme } from '@mui/material';
 import { ReactComponent as CloseIcon } from '../../assets/icons/close-plain.svg';
 import ProfileExample from '../../assets/profile-example.png';
 import UserProfileDetailRow from './UserProfileDetailRow';
-import { Gender, MBTI } from '../types';
+import { MBTI, UserDto } from '../types';
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
+  user: UserDto;
 }
 
-const UserProfileModal: FC<Props> = ({ isOpen, onClose }) => {
+const UserProfileModal: FC<Props> = ({ isOpen, onClose, user }) => {
   const theme = useTheme();
+
+  const {
+    nickname,
+    birthdate,
+    gender,
+    favorite_food,
+    interest,
+    mbti,
+    profile,
+  } = user;
+
+  const age = useMemo(() => {
+    const TODAY = new Date();
+    let baseAge = TODAY.getFullYear() - new Date(birthdate).getFullYear();
+
+    const diffInMonth = TODAY.getMonth() - new Date(birthdate).getMonth();
+
+    if (diffInMonth < 0) {
+      return baseAge;
+    }
+    return baseAge;
+  }, [birthdate]);
 
   return (
     <Sheet
@@ -61,7 +84,7 @@ const UserProfileModal: FC<Props> = ({ isOpen, onClose }) => {
             `}
           >
             <img
-              src={ProfileExample}
+              src={profile ?? ProfileExample}
               alt="user"
               css={css`
                 width: 180px;
@@ -86,7 +109,7 @@ const UserProfileModal: FC<Props> = ({ isOpen, onClose }) => {
                   letter-spacing: -0.104px;
                 `}
               >
-                Dustin
+                {nickname}
               </span>
               <span
                 css={css`
@@ -105,17 +128,21 @@ const UserProfileModal: FC<Props> = ({ isOpen, onClose }) => {
                   letter-spacing: -0.072px;
                 `}
               >
-                21
+                {age}
               </span>
             </div>
           </div>
-          <UserProfileDetailRow category="Gender" value={Gender.Male} />
-          <UserProfileDetailRow category="MBTI" value={MBTI.Enfj} />
-          <UserProfileDetailRow
-            category="Interest"
-            value={`Yesterday has little to do with annual leave or repetition. For some reason, I'm taking on a new job, and this is for me again? Yesterday has little to do with annual leave or repetition. For some reason, I'm taking on a new job, and this is for me again? I'm taking on a new job, and this is for me`}
-          />
-          <UserProfileDetailRow category="Favorite Food" value="Pizza" />
+          <UserProfileDetailRow category="Gender" value={gender} />
+          {mbti && <UserProfileDetailRow category="MBTI" value={MBTI.Enfj} />}
+          {interest && (
+            <UserProfileDetailRow category="Interest" value={interest} />
+          )}
+          {favorite_food && (
+            <UserProfileDetailRow
+              category="Favorite Food"
+              value={favorite_food}
+            />
+          )}
         </Sheet.Content>
       </Sheet.Container>
       <Sheet.Backdrop />

@@ -124,7 +124,11 @@ const Card: FC<CardProps> = ({ message, user, restaurant }) => {
           {message}
         </div>
       </div>
-      <UserProfileModal isOpen={isOpen} onClose={() => setOpen(false)} />
+      <UserProfileModal
+        isOpen={isOpen}
+        onClose={() => setOpen(false)}
+        user={user}
+      />
       <div
         css={css`
           height: 395px;
