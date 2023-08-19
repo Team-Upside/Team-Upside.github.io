@@ -494,10 +494,15 @@ table {
         `,onClick:()=>u((l+1)%n.pictures.length),children:[I("div",{css:$`
             width: 100%;
             height: 100%;
-            background-image: url(${n.pictures[l]});
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
+            background:
+              linear-gradient(
+                180deg,
+                rgba(0, 0, 0, 0) 0%,
+                rgba(0, 0, 0, 0.4) 100%
+              ),
+              url(${n.pictures[l]}) center / cover
+                no-repeat,
+              lightgray 50% / cover no-repeat;
           `}),I("div",{css:$`
             position: absolute;
             width: 100%;
