@@ -5,9 +5,9 @@ import TinderCard from 'react-tinder-card';
 const cardStyle = css`
   position: absolute;
   background-color: #fff;
-  width: 80vw;
-  max-width: 260px;
-  height: 300px;
+  width: 100%;
+  height: 80%;
+  max-height: 500px;
   box-shadow: 0px 0px 60px 0px rgba(0, 0, 0, 0.3);
   border-radius: 20px;
   background-size: cover;
@@ -41,35 +41,28 @@ const Swipe = () => {
       css={css`
         display: flex;
         justify-content: center;
-        width: 100vw;
         min-height: 100vh;
       `}
     >
-      <div
-        css={css`
-          width: 90vw;
-        `}
-      >
-        {people.map((person) => (
-          <TinderCard
-            css={cardStyle}
-            key={person.name}
-            preventSwipe={['up', 'down']}
-            onSwipe={(dir) => swiped(dir, person.name)}
-            onCardLeftScreen={() => outOfFrame(person.name)}
+      {people.map((person) => (
+        <TinderCard
+          css={cardStyle}
+          key={person.name}
+          preventSwipe={['up', 'down']}
+          onSwipe={(dir) => swiped(dir, person.name)}
+          onCardLeftScreen={() => outOfFrame(person.name)}
+        >
+          <div
+            css={css`
+              background-image: url(${person.url});
+              background-size: cover;
+              height: 100%;
+            `}
           >
-            <div
-              css={css`
-                background-image: url(${person.url});
-                background-size: cover;
-                height: 100%;
-              `}
-            >
-              <h3>{person.name}</h3>
-            </div>
-          </TinderCard>
-        ))}
-      </div>
+            <h3>{person.name}</h3>
+          </div>
+        </TinderCard>
+      ))}
     </div>
   );
 };
