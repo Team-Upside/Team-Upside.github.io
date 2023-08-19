@@ -32,9 +32,10 @@ const MainPage = () => {
             justify-content: center;
           `}
         >
-          {cards.map(({ message, user, restaurant }) => (
+          {cards.map(({ id, message, user, restaurant }) => (
             <Card
               key={user.nickname}
+              id={id}
               message={message}
               user={user}
               restaurant={restaurant}
