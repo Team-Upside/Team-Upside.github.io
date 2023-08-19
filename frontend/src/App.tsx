@@ -4,13 +4,14 @@ import { Global, css } from '@emotion/react';
 import globalStyles from './styles/globalStyles';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './common/auth';
+import { ThemeProvider } from '@mui/material';
+import SignupProvider from './signup/contexts/SignupContext';
+import { theme } from './styles/theme';
 import LoginPage from './pages/LoginPage';
 import MainPage from './pages/MainPage';
 import SwipePage from './pages/SwipePage';
 import SignupPage from './pages/SignupPage';
-import { ThemeProvider } from '@mui/material';
-import { theme } from './styles/theme';
-import SignupProvider from './signup/contexts/SignupContext';
+import ChatListPage from './pages/ChatListPage';
 
 const queryClient = new QueryClient();
 
@@ -43,6 +44,7 @@ const App: FC = () => (
                   }
                 />
                 <Route path="/swipe" element={<SwipePage />} />
+                <Route path="/chat" element={<ChatListPage />} />
               </Routes>
             </BrowserRouter>
           </div>
