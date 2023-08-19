@@ -40,7 +40,7 @@ const GoogleLoginButton: FC = () => {
 
   return (
     <div css={containerStyle}>
-      <div ref={googleButton} css={{ marginTop: '10px' }} />
+      <div ref={googleButton} />
     </div>
   );
 };

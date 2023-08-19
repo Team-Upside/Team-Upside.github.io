@@ -12,6 +12,7 @@ const globalStyles = css`
   }
   html {
     overflow: hidden;
+    min-width: 360px;
   }
 `;
 
