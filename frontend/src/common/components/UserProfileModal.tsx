@@ -3,7 +3,7 @@ import Sheet from 'react-modal-sheet';
 import { css } from '@emotion/react';
 import { IconButton, useTheme } from '@mui/material';
 import { ReactComponent as CloseIcon } from '../../assets/icons/close-plain.svg';
-import ProfileExample from '../../assets/profile-example.png';
+import AgentIcon from '../../assets/icons/agent.svg';
 import UserProfileDetailRow from './UserProfileDetailRow';
 import { MBTI, UserDto } from '../types';
 
@@ -84,11 +84,13 @@ const UserProfileModal: FC<Props> = ({ isOpen, onClose, user }) => {
             `}
           >
             <img
-              src={profile ?? ProfileExample}
-              alt="user"
+              src={profile ?? AgentIcon}
+              alt={nickname}
               css={css`
                 width: 180px;
                 height: 180px;
+                border: 1px solid;
+                border-color: ${theme.palette.gray[20]};
               `}
             />
             <div
