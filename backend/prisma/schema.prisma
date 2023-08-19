@@ -58,6 +58,7 @@ model Restaurant {
 enum CardStatus {
     WAITING
     MATCHED
+    CANCELED
 }
 
 model Card {

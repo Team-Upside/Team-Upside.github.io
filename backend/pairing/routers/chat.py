@@ -1,12 +1,14 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, Security
+from prisma.enums import CardStatus
 
 from pairing.auth import get_current_user, scheme
 from pairing.db import from_prisma_model, get_transaction
 from pairing.dtos.chat import ChatDto, ChatRoomDto, ChatRoomWithOpponentAndUnreadCountDto
 from pairing.dtos.restaurant import RestaurantDto
 from pairing.dtos.user import UserDto
+from pairing.services.card import service as card_service
 from pairing.services.chat import service as chat_service
 from prisma import Prisma
 
@@ -110,4 +112,13 @@ async def chat(
         raise HTTPException(status_code=403, detail="You are not a member of this chatroom")
 
     chat = await chat_service.chat(db, id, user.id, message)
+
+    if "[ACCEPT]" in message:
+        cards = await card_service.get_cards(db, user.id)
+        for card in cards:
+            if card.user_id == get_opponent_user(chatroom_dto.users, user.id).id:
+                await card_service.change_card_status(db, card.id, CardStatus.MATCHED)
+            else:
+                await card_service.change_card_status(db, card.id, CardStatus.CANCELED)
+
     return from_prisma_model(chat, ChatDto)
