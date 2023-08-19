@@ -1,8 +1,14 @@
-import { memo } from 'react';
+import { FC, memo } from 'react';
 import { css } from '@emotion/react';
 import { useTheme } from '@mui/material';
+import { ChatDto } from '../types';
+import { format } from 'date-fns';
 
-const MyUtterance = () => {
+interface MyUtteranceProps {
+  chat: ChatDto;
+}
+
+const MyUtterance: FC<MyUtteranceProps> = ({ chat }) => {
   const theme = useTheme();
   return (
     <div
@@ -26,7 +32,7 @@ const MyUtterance = () => {
           width: fit-content;
         `}
       >
-        afasdfasd
+        {chat.message === '[INVITE]' ? 'Sent an invitation' : chat.message}
       </div>
       <div
         css={css`
@@ -37,7 +43,7 @@ const MyUtterance = () => {
           line-height: 100%;
         `}
       >
-        09:25 AM
+        {format(new Date(chat.created_at), 'a h:mm')}
       </div>
     </div>
   );
