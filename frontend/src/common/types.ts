@@ -3,10 +3,10 @@ export interface UserDto {
   nickname: string;
   birthdate: string;
   gender: Gender;
-  mbti: string;
-  interest: string;
-  favorite_food: string;
-  profile: string;
+  mbti: string | null;
+  interest: string | null;
+  favorite_food: string | null;
+  profile: string | null;
 }
 
 export type CreateUserDto = Pick<UserDto, 'nickname' | 'birthdate' | 'gender'> &
