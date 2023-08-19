@@ -3,10 +3,9 @@ import Toolbar from '@mui/material/Toolbar';
 import { memo } from 'react';
 import { css } from '@emotion/react';
 import { Button, IconButton } from '@mui/material';
-import { ReactComponent as NotificationIcon } from '../../assets/icons/notification.svg';
-import { ReactComponent as UserFavoriteIcon } from '../../assets/icons/user-favorite.svg';
+import { ReactComponent as ChatIcon } from '../../assets/icons/chat.svg';
 import { ReactComponent as PlusIcon } from '../../assets/icons/plus.svg';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -34,11 +33,8 @@ const Navbar = () => {
             gap: 10px;
           `}
         >
-          <IconButton color="inherit" size="large">
-            <NotificationIcon />
-          </IconButton>
-          <IconButton color="inherit" size="large">
-            <UserFavoriteIcon />
+          <IconButton color="inherit" size="large" component={Link} to="/chat">
+            <ChatIcon />
           </IconButton>
         </div>
         <Button
@@ -49,11 +45,9 @@ const Navbar = () => {
             min-width: 56px;
             height: 56px;
             border-radius: 16px;
-            box-shadow:
-              0px 1px 3px 0px rgba(0, 0, 0, 0.3),
-              0px 4px 8px 3px rgba(0, 0, 0, 0.15);
           `}
           onClick={() => navigate(`/post?restaurant_id=1`)}
+          disableElevation
         >
           <PlusIcon />
         </Button>

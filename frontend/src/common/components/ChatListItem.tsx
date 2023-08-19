@@ -1,12 +1,15 @@
-import { Avatar, useTheme } from '@mui/material';
+import { Avatar, ButtonBase, useTheme } from '@mui/material';
 import sampleProfile from '../../assets/sample-profile.png';
 import { css } from '@emotion/react';
 import { memo } from 'react';
+import { Link } from 'react-router-dom';
 
 const ChatListItem = () => {
   const theme = useTheme();
   return (
-    <div
+    <ButtonBase
+      component={Link}
+      to={`/chat/1`}
       css={css`
         width: 100%;
         padding: 14px 20px;
@@ -98,7 +101,7 @@ const ChatListItem = () => {
           </div>
         </div>
       </div>
-    </div>
+    </ButtonBase>
   );
 };
 
