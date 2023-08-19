@@ -1,22 +1,25 @@
 import { css } from '@emotion/react';
 import { memo, useState } from 'react';
 import TinderCard from 'react-tinder-card';
+import Navbar from '../common/components/Navbar';
 
 const cardStyle = css`
   position: absolute;
   background-color: #fff;
-  width: calc(100% - 20px);
+  width: calc(100% - 40px);
   height: 80%;
   height: 524px;
   max-height: 524px;
-  box-shadow: 0px 0px 60px 0px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    0px 0px 1px 0px rgba(57, 63, 73, 0.31),
+    0px 3px 5px 0px rgba(56, 61, 69, 0.2);
   border-radius: 20px;
   background-size: cover;
   background-position: center;
   overflow: hidden;
 `;
 
-const Swipe = () => {
+const SwipePage = () => {
   const [people, setPeople] = useState([
     {
       name: 'Elon Musk',
@@ -40,32 +43,39 @@ const Swipe = () => {
   return (
     <div
       css={css`
-        display: flex;
-        justify-content: center;
-        min-height: 100vh;
+        height: 100vh;
       `}
     >
-      {people.map((person) => (
-        <TinderCard
-          css={cardStyle}
-          key={person.name}
-          preventSwipe={['up', 'down']}
-          onSwipe={(dir) => swiped(dir, person.name)}
-          onCardLeftScreen={() => outOfFrame(person.name)}
-        >
-          <div
-            css={css`
-              background-image: url(${person.url});
-              background-size: cover;
-              height: 100%;
-            `}
+      <Navbar />
+      <div
+        css={css`
+          margin-top: 12px;
+          display: flex;
+          justify-content: center;
+        `}
+      >
+        {people.map((person) => (
+          <TinderCard
+            css={cardStyle}
+            key={person.name}
+            preventSwipe={['up', 'down']}
+            onSwipe={(dir) => swiped(dir, person.name)}
+            onCardLeftScreen={() => outOfFrame(person.name)}
           >
-            <h3>{person.name}</h3>
-          </div>
-        </TinderCard>
-      ))}
+            <div
+              css={css`
+                background-image: url(${person.url});
+                background-size: cover;
+                height: 100%;
+              `}
+            >
+              <h3>{person.name}</h3>
+            </div>
+          </TinderCard>
+        ))}
+      </div>
     </div>
   );
 };
 
-export default memo(Swipe);
+export default memo(SwipePage);
