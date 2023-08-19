@@ -5,16 +5,23 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from loguru import logger
+from starlette.middleware.sessions import SessionMiddleware
 
+from .db import connect, disconnect
 from .errors import ServerRequestError
 from .routers.example import router as example_router
+from .routers.user import router as user_router
 
 
 def create_app():
     app = FastAPI(
         title="Pairing Backend",
         description="Pairing Backend",
+        swagger_ui_parameters={
+            "persistAuthorization": True,
+        }
     )
+    app.add_middleware(SessionMiddleware, secret_key="some-random-string")
     app.add_middleware(
         CORSMiddleware,
         allow_origins=["*"],
@@ -28,6 +35,19 @@ def create_app():
         prefix="/example",
         tags=["Example"],
     )
+    app.include_router(
+        user_router,
+        prefix="/users",
+        tags=["User"],
+    )
+
+    @app.on_event("startup")
+    async def startup():
+        await connect()
+
+    @app.on_event("shutdown")
+    async def shutdown():
+        await disconnect()
 
     @app.get("/health")
     async def health():
@@ -40,7 +60,7 @@ def create_app():
             {
                 "type": "InternalError",
                 "message": "Internal Server Error",
-                "detail": repr(exc),
+                "detail": str(exc),
                 "traceback": "".join(tb),
             },
             status_code=500,

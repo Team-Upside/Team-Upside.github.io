@@ -1,3 +1,6 @@
 fastapi
 uvicorn
 prisma
+fastapi-auth0
+python-multipart
+google-cloud-storage

@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from pairing.models import ExampleDto
+from pairing.dtos.example import ExampleDto
 
 router = APIRouter()
 

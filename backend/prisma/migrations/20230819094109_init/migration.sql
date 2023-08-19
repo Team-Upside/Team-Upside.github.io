@@ -9,8 +9,7 @@ CREATE TYPE "PairingStatus" AS ENUM ('APPROVED', 'REJECTED');
 
 -- CreateTable
 CREATE TABLE "user" (
-    "id" SERIAL NOT NULL,
-    "email" TEXT NOT NULL,
+    "id" TEXT NOT NULL,
     "nickname" TEXT NOT NULL,
     "birthdate" TIMESTAMP(3) NOT NULL,
     "gender" "Gender" NOT NULL,
@@ -28,7 +27,7 @@ CREATE TABLE "user" (
 -- CreateTable
 CREATE TABLE "notification" (
     "id" SERIAL NOT NULL,
-    "user_id" INTEGER NOT NULL,
+    "user_id" TEXT NOT NULL,
     "resource_type" TEXT NOT NULL,
     "resource_id" INTEGER NOT NULL,
     "message" TEXT NOT NULL,
@@ -58,7 +57,7 @@ CREATE TABLE "restaurant" (
 CREATE TABLE "menu" (
     "id" SERIAL NOT NULL,
     "restaurant_id" INTEGER NOT NULL,
-    "user_id" INTEGER NOT NULL,
+    "user_id" TEXT NOT NULL,
     "status" "CardStatus" NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -69,7 +68,7 @@ CREATE TABLE "menu" (
 -- CreateTable
 CREATE TABLE "pairing" (
     "id" SERIAL NOT NULL,
-    "user_id" INTEGER NOT NULL,
+    "user_id" TEXT NOT NULL,
     "card_id" INTEGER NOT NULL,
     "status" "PairingStatus" NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -79,7 +78,10 @@ CREATE TABLE "pairing" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "user_email_nickname_key" ON "user"("email", "nickname");
+CREATE UNIQUE INDEX "user_id_key" ON "user"("id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "user_nickname_key" ON "user"("nickname");
 
 -- AddForeignKey
 ALTER TABLE "notification" ADD CONSTRAINT "notification_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

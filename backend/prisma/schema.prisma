@@ -17,16 +17,15 @@ enum Gender {
 }
 
 model User {
-    id            Int      @id @default(autoincrement())
-    email         String
-    nickname      String
-    birthdate     DateTime
+    id            String  @id @unique
+    nickname      String  @unique
+    birthdate     String
     gender        Gender
     mbti          String?
     interest      String?
     favorite_food String?
     profile       String?
-    metadata      Json     @default("{}")
+    metadata      Json    @default("{}")
 
     created_at   DateTime       @default(now())
     updated_at   DateTime       @default(now()) @updatedAt
@@ -34,14 +33,13 @@ model User {
     Card         Card[]
     Pairing      Pairing[]
 
-    @@unique([email, nickname])
     @@map("user")
 }
 
 model Notification {
     id            Int     @id @default(autoincrement())
     user          User    @relation(fields: [user_id], references: [id])
-    user_id       Int
+    user_id       String
     resource_type String
     resource_id   Int
     message       String
@@ -80,7 +78,7 @@ model Card {
     restaurant    Restaurant @relation(fields: [restaurant_id], references: [id])
     restaurant_id Int
     user          User       @relation(fields: [user_id], references: [id])
-    user_id       Int
+    user_id       String
     status        CardStatus
 
     created_at DateTime  @default(now())
@@ -98,7 +96,7 @@ enum PairingStatus {
 model Pairing {
     id      Int           @id @default(autoincrement())
     user    User          @relation(fields: [user_id], references: [id])
-    user_id Int
+    user_id String
     card    Card          @relation(fields: [card_id], references: [id])
     card_id Int
     status  PairingStatus
