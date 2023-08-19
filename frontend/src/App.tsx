@@ -11,6 +11,7 @@ import { theme } from './styles/theme';
 import SignupProvider from './signup/contexts/SignupContext';
 import { Auth0Provider } from '@auth0/auth0-react';
 import { AxiosProvider } from './common/AxiosContext';
+import ChatListPage from './pages/ChatListPage';
 
 const queryClient = new QueryClient();
 
