@@ -50,9 +50,8 @@ const LoginButton: FC = () => {
       <span
         css={css`
           font-size: 16px;
-          font-style: normal;
           font-weight: 590;
-          line-height: 140%; /* 22.4px */
+          line-height: 140%;
           letter-spacing: -0.064px;
         `}
       >

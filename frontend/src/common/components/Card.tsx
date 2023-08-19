@@ -25,7 +25,6 @@ const cardStyle = css`
 
 const titleStyle = css`
   font-size: 22px;
-  font-style: normal;
   font-weight: 700;
   line-height: 140%;
   letter-spacing: -0.088px;
@@ -36,7 +35,6 @@ const distanceStyle = css`
   color: ${theme.palette.gray[40]};
   text-align: center;
   font-size: 14px;
-  font-style: normal;
   font-weight: 400;
   line-height: 140%;
   letter-spacing: -0.056px;

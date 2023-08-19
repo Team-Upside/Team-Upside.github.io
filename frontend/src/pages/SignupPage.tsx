@@ -106,9 +106,8 @@ const SignupPage: FC = () => {
           <h1
             css={css`
               font-size: 18px;
-              font-style: normal;
               font-weight: 590;
-              line-height: 140%; /* 25.2px */
+              line-height: 140%;
               letter-spacing: -0.072px;
               margin-bottom: ${step >= 6 ? '6px' : '35px'};
             `}
@@ -119,9 +118,8 @@ const SignupPage: FC = () => {
             <p
               css={css`
                 font-size: 14px;
-                font-style: normal;
                 font-weight: 274;
-                line-height: 140%; /* 19.6px */
+                line-height: 140%;
                 letter-spacing: -0.056px;
                 color: ${theme.palette.gray[60]};
                 margin-bottom: ${step >= 6 ? '35px' : undefined};
