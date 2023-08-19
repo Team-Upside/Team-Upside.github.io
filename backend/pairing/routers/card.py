@@ -47,6 +47,15 @@ async def get_card(
     return card_dto
 
 
+@router.get("/{card_id}/advice")
+async def get_advice(
+    card_id: int,
+    db: Annotated[Prisma, Depends(get_transaction)],
+    user: UserDto = Security(get_current_user),
+) -> str:
+    return await card_service.gpt_advice(db, user.id, card_id)
+
+
 @router.post("/{card_id}/approve")
 async def accept_card(
     card_id: int,

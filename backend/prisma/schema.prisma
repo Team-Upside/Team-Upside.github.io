@@ -27,12 +27,15 @@ model User {
     profile       String?
     metadata      Json    @default("{}")
 
-    created_at DateTime   @default(now())
-    updated_at DateTime   @default(now()) @updatedAt
-    cards      Card[]
-    user_cards UserCard[]
-    chatrooms  ChatRoom[]
-    chats      Chat[]
+    created_at           DateTime    @default(now())
+    updated_at           DateTime    @default(now()) @updatedAt
+    cards                Card[]
+    user_cards           UserCard[]
+    chatrooms            ChatRoom[]
+    chats                Chat[]
+    gpt_advices          GPTAdvice[] @relation("user_to_opponent")
+    opponent_gpt_advices GPTAdvice[] @relation("opponent_to_user")
+    GPTAdvice            GPTAdvice[]
 
     @@map("user")
 }
@@ -117,4 +120,22 @@ model Chat {
     created_at DateTime @default(now())
 
     @@map("chat")
+}
+
+model GPTAdvice {
+    id               Int    @id @default(autoincrement())
+    user             User   @relation(fields: [user_id], references: [id], name: "opponent_to_user")
+    user_id          String
+    opponent         User   @relation(fields: [opponent_user_id], references: [id], name: "user_to_opponent")
+    opponent_user_id String
+    message          String
+    price            Float
+
+    created_at DateTime @default(now())
+    updated_at DateTime @default(now()) @updatedAt
+    User       User?    @relation(fields: [userId], references: [id])
+    userId     String?
+
+    @@unique([user_id, opponent_user_id])
+    @@map("gpt_advice")
 }
