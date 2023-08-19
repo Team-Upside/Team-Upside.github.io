@@ -1,9 +1,18 @@
 import { css } from '@emotion/react';
-import { memo } from 'react';
+import { FC, memo, useCallback, useState } from 'react';
 import { Button, useTheme } from '@mui/material';
 
-const ChatInput = () => {
+interface ChatInputProps {
+  onSubmit: (message: string) => void;
+}
+
+const ChatInput: FC<ChatInputProps> = ({ onSubmit }) => {
   const theme = useTheme();
+  const [message, setMessage] = useState('');
+  const submit = useCallback(() => {
+    onSubmit(message);
+    setMessage('');
+  }, [message, onSubmit]);
 
   return (
     <div
@@ -27,8 +36,17 @@ const ChatInput = () => {
           padding: 10px;
           color: ${theme.palette.gray[100]};
         `}
+        placeholder="Write your message"
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        onKeyUp={(e) => {
+          if (e.key === 'Enter') {
+            submit();
+          }
+        }}
       />
       <Button
+        type="button"
         css={css`
           height: 40px;
           border-radius: 6px;
@@ -39,6 +57,7 @@ const ChatInput = () => {
         variant="contained"
         color="primary"
         disableElevation
+        onClick={submit}
       >
         Send
       </Button>

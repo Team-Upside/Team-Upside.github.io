@@ -15,7 +15,7 @@ const ChatListItem: FC<ChatListItemProps> = ({ chatroom }) => {
   return (
     <ButtonBase
       component={Link}
-      to={`/chat/1`}
+      to={`/chat/${chatroom.id}`}
       css={css`
         width: 100%;
         padding: 14px 20px;

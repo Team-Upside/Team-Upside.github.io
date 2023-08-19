@@ -1,9 +1,23 @@
-import { memo } from 'react';
+import { FC, memo } from 'react';
 import { css } from '@emotion/react';
-import { Avatar, useTheme } from '@mui/material';
+import { Avatar, Button, useTheme } from '@mui/material';
 import sampleProfile from '../../assets/sample-profile.png';
+import { ChatDto, UserDto } from '../types';
+import { format } from 'date-fns';
 
-const OpponentUtterance = () => {
+interface OpponentUtteranceProps {
+  user: UserDto;
+  chat: ChatDto;
+  acceptInvitation: () => void;
+  acceptDisabled: boolean;
+}
+
+const OpponentUtterance: FC<OpponentUtteranceProps> = ({
+  user,
+  chat,
+  acceptInvitation,
+  acceptDisabled,
+}) => {
   const theme = useTheme();
   return (
     <div
@@ -15,7 +29,7 @@ const OpponentUtterance = () => {
     >
       <Avatar
         alt=""
-        src={sampleProfile}
+        src={user.profile ?? sampleProfile}
         css={css`
           width: 40px;
           height: 40px;
@@ -32,7 +46,7 @@ const OpponentUtterance = () => {
             margin-bottom: 6px;
           `}
         >
-          Alex Linderson
+          {user.nickname}
         </div>
         <div
           css={css`
@@ -49,7 +63,33 @@ const OpponentUtterance = () => {
             width: fit-content;
           `}
         >
-          afasdfasd
+          {chat.message === '[INVITE]' ? (
+            <>
+              <span>{user.nickname} invited me to a meal.</span>
+              <Button
+                css={css`
+                  width: 100%;
+                  padding: 6px 0;
+                  margin-top: 6px;
+                  border-radius: 6px;
+                  font-size: 12px;
+                  font-weight: 590;
+                  line-height: 140%;
+                  letter-spacing: -0.048px;
+                  text-transform: none;
+                `}
+                type="button"
+                variant="contained"
+                onClick={acceptInvitation}
+                disableElevation
+                disabled={acceptDisabled}
+              >
+                Accept invitation
+              </Button>
+            </>
+          ) : (
+            chat.message
+          )}
         </div>
         <div
           css={css`
@@ -60,7 +100,7 @@ const OpponentUtterance = () => {
             line-height: 100%;
           `}
         >
-          09:25 AM
+          {format(new Date(chat.created_at), 'hh:mm a')}
         </div>
       </div>
     </div>

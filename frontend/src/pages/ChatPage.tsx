@@ -6,9 +6,59 @@ import OpponentUtterance from '../common/components/OpponentUtterance';
 import { ReactComponent as ChevronLeftIcon } from '../assets/icons/chevron-left.svg';
 import sampleFood1Image from '../assets/sample-food-1.png';
 import ChatInput from '../common/components/ChatInput';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { useAxios } from '../common/AxiosContext';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { ChatDto, ChatroomDto, UserDto } from '../common/types';
+import SystemMessage from '../common/components/SystemMessage';
 const ChatListPage = () => {
+  const { id } = useParams<{ id: string }>();
+  const queryClient = useQueryClient();
   const theme = useTheme();
+  const axios = useAxios();
+
+  const { data: me } = useQuery({
+    queryKey: ['me'],
+    queryFn: async () => {
+      const { data } = await axios.get<UserDto>('/users/me');
+      return data;
+    },
+  });
+
+  const { mutateAsync: read } = useMutation({
+    mutationFn: async () => {
+      await axios.patch(`/chatrooms/${id}/read`);
+    },
+  });
+
+  const { mutateAsync: send } = useMutation({
+    mutationFn: async (message: string) => {
+      await axios.post(`/chatrooms/${id}/chats?message=${message}`);
+      queryClient.invalidateQueries(['chatrooms', id, 'chats']);
+    },
+  });
+
+  const { data: chatroom } = useQuery({
+    queryKey: ['chatrooms', id],
+    queryFn: async () => {
+      const { data } = await axios.get<ChatroomDto>(`/chatrooms/${id}`);
+      return data;
+    },
+  });
+
+  const { data: chats } = useQuery({
+    queryKey: ['chatrooms', id, 'chats'],
+    queryFn: async () => {
+      const { data } = await axios.get<ChatDto[]>(`/chatrooms/${id}/chats`);
+      await read();
+      return data;
+    },
+    refetchInterval: 2000,
+  });
+
+  if (!me) {
+    return null;
+  }
 
   return (
     <div
@@ -50,7 +100,7 @@ const ChatListPage = () => {
             letter-spacing: -0.064px;
           `}
         >
-          Wade
+          {chatroom?.opponent_user.nickname}
         </h1>
       </div>
       <div
@@ -65,8 +115,8 @@ const ChatListPage = () => {
         `}
       >
         <img
-          src={sampleFood1Image}
-          alt="sample-food-1"
+          src={chatroom?.restaurant.pictures[0] ?? sampleFood1Image}
+          alt=""
           css={css`
             width: 36px;
             height: 36px;
@@ -84,7 +134,7 @@ const ChatListPage = () => {
             letter-spacing: -0.056px;
           `}
         >
-          Lacoon Pizza
+          {chatroom?.restaurant.name}
         </h2>
         <div
           css={css`
@@ -119,6 +169,11 @@ const ChatListPage = () => {
             font-size: 14px;
             font-weight: 600;
           `}
+          type="button"
+          onClick={() => {
+            send('[INVITE]');
+          }}
+          disabled={chats?.some((chat) => chat.message === '[INVITE]')}
         >
           Invite
         </Button>
@@ -129,14 +184,51 @@ const ChatListPage = () => {
           flex-direction: column;
           justify-content: flex-start;
           flex: 1;
-          padding: 20px 20px 0 20px;
+          padding: 20px;
           gap: 24px;
+          overflow-y: auto;
         `}
       >
-        <OpponentUtterance />
-        <MyUtterance />
+        {chats?.map((chat) => {
+          const sender =
+            chat.user_id === chatroom?.opponent_user.id
+              ? chatroom?.opponent_user
+              : me;
+          if (chat.message === '[ACCEPT]') {
+            return (
+              <SystemMessage
+                key={chat.id}
+                message={`${sender.nickname} accepted the invitation`}
+              />
+            );
+          } else if (chat.message === '[REJECT]') {
+            return (
+              <SystemMessage
+                key={chat.id}
+                message={`${sender.nickname} Weber turned down the invitation`}
+              />
+            );
+          }
+
+          return chat.user_id === chatroom?.opponent_user.id ? (
+            <OpponentUtterance
+              key={chat.id}
+              user={chatroom.opponent_user}
+              chat={chat}
+              acceptDisabled={chats.some(
+                (chat) =>
+                  chat.message === '[ACCEPT]' || chat.message === '[REJECT]'
+              )}
+              acceptInvitation={() => {
+                send('[ACCEPT]');
+              }}
+            />
+          ) : (
+            <MyUtterance key={chat.id} chat={chat} />
+          );
+        })}
       </div>
-      <ChatInput />
+      <ChatInput onSubmit={send} />
     </div>
   );
 };
