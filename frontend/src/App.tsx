@@ -1,6 +1,5 @@
 import { FC, StrictMode } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import HelloWorld from './HelloWorld';
 import { Global, css } from '@emotion/react';
 import globalStyles from './styles/globalStyles';
 import Swipe from './Swipe';
@@ -15,7 +14,7 @@ const App: FC = () => (
   <StrictMode>
     <Global styles={globalStyles} />
     <QueryClientProvider client={queryClient}>
-      <AuthProvider> 
+      <AuthProvider>
         <div
           css={css`
             margin: 0 auto;
