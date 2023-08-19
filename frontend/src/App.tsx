@@ -12,6 +12,7 @@ import SignupProvider from './signup/contexts/SignupContext';
 import { Auth0Provider } from '@auth0/auth0-react';
 import { AxiosProvider } from './common/AxiosContext';
 import ChatListPage from './pages/ChatListPage';
+import RequiredAuth from './common/components/RequiredAuth';
 
 const queryClient = new QueryClient();
 
@@ -41,7 +42,10 @@ const App: FC = () => (
             >
               <BrowserRouter>
                 <Routes>
-                  <Route path="/" element={<MainPage />} />
+                  <Route element={<RequiredAuth />}>
+                    <Route path="/" element={<MainPage />} />
+                    <Route path="/chat" element={<ChatListPage />} />
+                  </Route>
                   <Route path="/login" element={<LoginPage />} />
                   <Route
                     path="/signup"
@@ -51,7 +55,6 @@ const App: FC = () => (
                       </SignupProvider>
                     }
                   />
-                  <Route path="/chat" element={<ChatListPage />} />
                 </Routes>
               </BrowserRouter>
             </div>
