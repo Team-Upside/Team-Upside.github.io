@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { memo, useState } from 'react';
 import TinderCard from 'react-tinder-card';
-import Navbar from './common/components/Navbar';
+import Navbar from '../common/components/Navbar';
 
 const cardStyle = css`
   position: absolute;

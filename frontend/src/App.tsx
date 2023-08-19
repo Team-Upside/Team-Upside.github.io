@@ -2,11 +2,11 @@ import { FC, StrictMode } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Global, css } from '@emotion/react';
 import globalStyles from './styles/globalStyles';
-import Swipe from './Swipe';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './common/auth';
 import LoginPage from './pages/LoginPage';
 import MainPage from './pages/MainPage';
+import SwipePage from './pages/SwipePage';
 import SignupPage from './pages/SignupPage';
 import { ThemeProvider } from '@mui/material';
 import { theme } from './styles/theme';
@@ -34,7 +34,7 @@ const App: FC = () => (
                 <Route path="/" element={<MainPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/signup" element={<SignupPage />} />
-                <Route path="/swipe" element={<Swipe />} />
+                <Route path="/swipe" element={<SwipePage />} />
               </Routes>
             </BrowserRouter>
           </div>
