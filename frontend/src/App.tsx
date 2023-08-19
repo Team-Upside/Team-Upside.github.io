@@ -19,6 +19,7 @@ const App: FC = () => (
           css={css`
             margin: 0 auto;
             background-color: white;
+            min-width: 360px;
             max-width: 430px;
             position: relative;
             overflow: hidden;
