@@ -9,6 +9,7 @@ import { Button, Grid } from '@mui/material';
 import { theme } from '../../styles/theme';
 
 const itemStyle = (selected: boolean) => css`
+  width: 100%;
   border-radius: 300px;
   border: 1px solid ${theme.palette.gray[10]};
   border-color: ${selected
@@ -23,12 +24,11 @@ const MBTIStep: FC = () => {
   const { setMBTI } = useSignupDispatchContext();
 
   return (
-    <Grid container spacing={1}>
+    <Grid container spacing={2}>
       {Object.values(MBTI).map((mbtiItem) => (
-        <Grid item xs={3}>
+        <Grid item xs={3} key={mbtiItem}>
           <Button
             type="button"
-            key={mbtiItem}
             onClick={() => setMBTI(mbtiItem)}
             variant="outlined"
             css={itemStyle(mbti === mbtiItem)}
