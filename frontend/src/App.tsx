@@ -51,6 +51,7 @@ const App: FC = () => (
                       </SignupProvider>
                     }
                   />
+                  <Route path="/chat" element={<ChatListPage />} />
                 </Routes>
               </BrowserRouter>
             </div>

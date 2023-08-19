@@ -54,12 +54,12 @@ const SignupProvider = ({ children }: { children: ReactNode }) => {
     return nickname !== '' && nickname.length <= 10;
   }, [signupState.nickname]);
 
-  const validateBirthdate = useMemo(
-    () =>
-      signupState.birthdate.length === 12 &&
-      !isNaN(Date.parse(signupState.birthdate)),
-    [signupState.birthdate]
-  );
+  const validateBirthdate = useMemo(() => {
+    const { birthdate } = signupState;
+    const parsedBirthdate = birthdate.replaceAll('. ', '-');
+
+    return parsedBirthdate.length === 10 && !isNaN(Date.parse(parsedBirthdate));
+  }, [signupState.birthdate]);
 
   const signupDispatch = useMemo(
     () => ({
