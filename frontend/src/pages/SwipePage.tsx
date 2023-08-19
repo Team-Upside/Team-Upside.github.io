@@ -2,7 +2,8 @@ import { css } from '@emotion/react';
 import { memo, useState } from 'react';
 import Navbar from '../common/components/Navbar';
 import Card from '../common/components/Card';
-import sampleFoodImage from '../assets/sample-food.png';
+import sampleFood1Image from '../assets/sample-food-1.png';
+import sampleFood2Image from '../assets/sample-food-2.png';
 
 const SwipePage = () => {
   const [people, setPeople] = useState([
@@ -33,7 +34,7 @@ const SwipePage = () => {
             key={person.name}
             person={person}
             restaurant={{ name: 'Lacoon Pizza' }}
-            images={[sampleFoodImage]}
+            images={[sampleFood1Image, sampleFood2Image]}
           />
         ))}
       </div>
