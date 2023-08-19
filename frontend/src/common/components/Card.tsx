@@ -6,6 +6,8 @@ import { Button, useTheme } from '@mui/material';
 import { ReactComponent as ChevronRightIcon } from '../../assets/icons/chevron-right.svg';
 import ProfileExample from '../../assets/profile-example.png';
 import UserProfileModal from './UserProfileModal';
+import { UserDto } from '../types';
+import { RestaurantDto } from '../../cards/types';
 
 const cardStyle = css`
   position: absolute;
@@ -43,16 +45,12 @@ const distanceStyle = css`
 `;
 
 interface CardProps {
-  person: {
-    name: string;
-  };
-  restaurant: {
-    name: string;
-  };
-  images: string[];
+  message: string;
+  user: UserDto;
+  restaurant: RestaurantDto;
 }
 
-const Card: FC<CardProps> = ({ person, restaurant, images }) => {
+const Card: FC<CardProps> = ({ message, user, restaurant }) => {
   const theme = useTheme();
 
   const [isOpen, setOpen] = useState(false);
@@ -66,14 +64,14 @@ const Card: FC<CardProps> = ({ person, restaurant, images }) => {
     console.log(name + ' left the screen!');
   };
 
-  const [imageIndex, setImageIndex] = useState(0);
+  const [showingPictureIndex, setShowingPictureIndex] = useState(0);
 
   return (
     <TinderCard
       css={cardStyle}
       preventSwipe={['up', 'down']}
-      onSwipe={(dir) => swiped(dir, person.name)}
-      onCardLeftScreen={() => outOfFrame(person.name)}
+      onSwipe={(dir) => swiped(dir, user.nickname)}
+      onCardLeftScreen={() => outOfFrame(user.nickname)}
     >
       <div
         css={css`
@@ -95,7 +93,7 @@ const Card: FC<CardProps> = ({ person, restaurant, images }) => {
               height: 60px;
               border-radius: 50%;
             `}
-            src={ProfileExample}
+            src={user.profile ?? ProfileExample}
             alt="user"
           />
         </Button>
@@ -123,8 +121,7 @@ const Card: FC<CardProps> = ({ person, restaurant, images }) => {
               0px 3px 5px 0px rgba(56, 61, 69, 0.2);
           `}
         >
-          text text text text text text text text text text text text text text
-          text text text text text text text text text text text text
+          {message}
         </div>
       </div>
       <UserProfileModal isOpen={isOpen} onClose={() => setOpen(false)} />
@@ -138,13 +135,17 @@ const Card: FC<CardProps> = ({ person, restaurant, images }) => {
           overflow: hidden;
           position: relative;
         `}
-        onClick={() => setImageIndex((imageIndex + 1) % images.length)}
+        onClick={() =>
+          setShowingPictureIndex(
+            (showingPictureIndex + 1) % restaurant.pictures.length
+          )
+        }
       >
         <div
           css={css`
             width: 100%;
             height: 100%;
-            background-image: url(${images[imageIndex]});
+            background-image: url(${restaurant.pictures[showingPictureIndex]});
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
@@ -162,13 +163,13 @@ const Card: FC<CardProps> = ({ person, restaurant, images }) => {
             padding: 0 17px;
           `}
         >
-          {images.map((image, index) => (
+          {restaurant.pictures.map((picture, index) => (
             <div
-              key={image}
+              key={picture}
               css={css`
                 flex: 1;
                 height: 100%;
-                background-color: ${index === imageIndex
+                background-color: ${index === showingPictureIndex
                   ? theme.palette.primary.main
                   : theme.palette.gray[10]};
                 border-radius: 300px;
