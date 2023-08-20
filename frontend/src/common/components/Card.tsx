@@ -307,6 +307,11 @@ const Card: FC<CardProps> = ({ id, message, user, restaurant }) => {
               (showingPictureIndex + 1) % restaurant.pictures.length
             )
           }
+          onTouchEnd={() =>
+            setShowingPictureIndex(
+              (showingPictureIndex + 1) % restaurant.pictures.length
+            )
+          }
         >
           <div
             css={css`
