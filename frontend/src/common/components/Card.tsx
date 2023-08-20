@@ -185,6 +185,7 @@ const Card: FC<CardProps> = ({ id, message, user, restaurant }) => {
           bottom: 80px;
           top: 548px;
           left: 50%;
+          max-width: 390px;
           width: calc(100% - 40px);
           height: 48px;
           transform: translateX(-50%);
@@ -250,7 +251,7 @@ const Card: FC<CardProps> = ({ id, message, user, restaurant }) => {
             z-index: 3;
           `}
         >
-          <Button type="button" variant="text" onClick={() => setOpen(true)}>
+          <Button type="button" variant="text" onTouchEnd={() => setOpen(true)}>
             <img
               css={css`
                 width: 60px;
