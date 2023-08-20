@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { FC, memo, useState } from 'react';
+import { FC, memo, useRef, useState } from 'react';
 import TinderCard from 'react-tinder-card';
 import { theme } from '../../styles/theme';
 import { Button, IconButton, Modal, useTheme } from '@mui/material';
@@ -61,6 +61,7 @@ const Card: FC<CardProps> = ({ id, message, user, restaurant }) => {
 
   const [isOpen, setOpen] = useState(false);
   const [visibleAdviceModal, setVisibleAdviceModal] = useState(false);
+  const processingRef = useRef(false);
 
   const { data: advice } = useQuery({
     queryKey: [id, user, message],
@@ -72,7 +73,12 @@ const Card: FC<CardProps> = ({ id, message, user, restaurant }) => {
 
   const { mutateAsync: approve } = useMutation({
     mutationFn: async () => {
-      await axios.post<undefined, CardDto>(`/cards/${id}/approve`);
+      processingRef.current = true;
+      try {
+        await axios.post<undefined, CardDto>(`/cards/${id}/approve`);
+      } finally {
+        processingRef.current = false;
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['chatrooms']);
@@ -81,7 +87,12 @@ const Card: FC<CardProps> = ({ id, message, user, restaurant }) => {
   });
   const { mutateAsync: ignore } = useMutation({
     mutationFn: async () => {
-      await axios.post<undefined, CardDto>(`/cards/${id}/ignore`);
+      processingRef.current = true;
+      try {
+        await axios.post<undefined, CardDto>(`/cards/${id}/ignore`);
+      } finally {
+        processingRef.current = false;
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['chatrooms']);
@@ -90,6 +101,7 @@ const Card: FC<CardProps> = ({ id, message, user, restaurant }) => {
   });
 
   const outOfFrame = async (direction: string) => {
+    if (processingRef.current) return;
     if (direction === 'left') {
       await toast.promise(ignore(), {
         loading: 'Processing...',
