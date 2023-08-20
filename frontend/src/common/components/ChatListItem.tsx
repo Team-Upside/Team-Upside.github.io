@@ -94,7 +94,7 @@ const ChatListItem: FC<ChatListItemProps> = ({ chatroom }) => {
           {chatroom.unread_count > 0 && (
             <div
               css={css`
-                width: 16px;
+                min-width: 16px;
                 height: 16px;
                 background-color: ${theme.palette.primary.main};
                 border-radius: 50%;
