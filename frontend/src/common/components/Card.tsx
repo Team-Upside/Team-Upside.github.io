@@ -4,7 +4,7 @@ import TinderCard from 'react-tinder-card';
 import { theme } from '../../styles/theme';
 import { Button, IconButton, Modal, useTheme } from '@mui/material';
 import { ReactComponent as ChevronRightIcon } from '../../assets/icons/chevron-right.svg';
-import AgentIcon from '../../assets/icons/agent.svg';
+import AgentIcon from '../../assets/agent-icon.png';
 import UserProfileModal from './UserProfileModal';
 import { UserDto } from '../types';
 import { CardDto, RestaurantDto } from '../../cards/types';

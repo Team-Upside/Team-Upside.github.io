@@ -3,7 +3,7 @@ import Sheet from 'react-modal-sheet';
 import { css } from '@emotion/react';
 import { IconButton, useTheme } from '@mui/material';
 import { ReactComponent as CloseIcon } from '../../assets/icons/close-plain.svg';
-import AgentIcon from '../../assets/icons/agent.svg';
+import AgentIcon from '../../assets/agent-icon.png';
 import UserProfileDetailRow from './UserProfileDetailRow';
 import { MBTI, UserDto } from '../types';
 

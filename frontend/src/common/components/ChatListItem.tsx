@@ -1,5 +1,5 @@
 import { Avatar, ButtonBase, useTheme } from '@mui/material';
-import AgentIcon from '../../assets/icons/agent.svg';
+import AgentIcon from '../../assets/agent-icon.png';
 import { css } from '@emotion/react';
 import { FC, memo } from 'react';
 import { Link } from 'react-router-dom';
