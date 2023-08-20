@@ -11,6 +11,7 @@ import { CardDto, RestaurantDto } from '../../cards/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useAxios } from '../AxiosContext';
 import { ReactComponent as CloseIcon } from '../../assets/icons/close-plain.svg';
+import { Toaster, toast } from 'react-hot-toast';
 
 const cardStyle = css`
   position: absolute;
@@ -74,11 +75,13 @@ const Card: FC<CardProps> = ({ id, message, user, restaurant }) => {
     mutationFn: async () => {
       await axios.post<undefined, CardDto>(`/cards/${id}/approve`);
     },
+    onSuccess: () => toast.success('Successfully approved'),
   });
   const { mutateAsync: ignore } = useMutation({
     mutationFn: async () => {
       await axios.post<undefined, CardDto>(`/cards/${id}/ignore`);
     },
+    onSuccess: () => toast.success('Successfully ignored'),
   });
 
   const outOfFrame = async (direction: string) => {
@@ -91,19 +94,9 @@ const Card: FC<CardProps> = ({ id, message, user, restaurant }) => {
 
   const [showingPictureIndex, setShowingPictureIndex] = useState(0);
 
-  const style = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-  };
   return (
     <>
+      <Toaster />
       <Modal
         open={visibleAdviceModal}
         onClose={() => setVisibleAdviceModal(false)}
@@ -182,9 +175,11 @@ const Card: FC<CardProps> = ({ id, message, user, restaurant }) => {
         onClick={() => setVisibleAdviceModal(true)}
         css={css`
           position: fixed;
-          bottom: 200px;
+          bottom: 80px;
+          top: 548px;
           left: 50%;
-          width: 390px;
+          width: calc(100% - 40px);
+          height: 48px;
           transform: translateX(-50%);
           padding: 8px;
           display: flex;
