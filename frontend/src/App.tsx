@@ -1,4 +1,4 @@
-import { FC, StrictMode } from 'react';
+import { FC } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Global, css } from '@emotion/react';
 import globalStyles from './styles/globalStyles';
@@ -19,7 +19,7 @@ import PostPage from './pages/PostPage';
 const queryClient = new QueryClient();
 
 const App: FC = () => (
-  <StrictMode>
+  <>
     <Global styles={globalStyles} />
     <ThemeProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
@@ -66,7 +66,7 @@ const App: FC = () => (
         </Auth0Provider>
       </QueryClientProvider>
     </ThemeProvider>
-  </StrictMode>
+  </>
 );
 
 export default App;

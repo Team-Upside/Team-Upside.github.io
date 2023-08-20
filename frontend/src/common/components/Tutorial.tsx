@@ -1,9 +1,10 @@
 import { FC, memo } from 'react';
 import { css } from '@emotion/react';
-import { useTheme } from '@mui/material';
+import { IconButton, useTheme } from '@mui/material';
 import Tab from '../../assets/tab.svg';
 import Approve from '../../assets/approve.svg';
 import Ignore from '../../assets/ignore.svg';
+import { ReactComponent as CloseIcon } from '../../assets/icons/close-plain.svg';
 
 const Row: FC<{ assets: string; title: string; subtitle: string }> = ({
   assets,
@@ -67,6 +68,7 @@ const Tutorial: FC<Props> = ({ onClickClose }) => {
     <div
       onClick={onClickClose}
       css={css`
+        position: relative;
         display: flex;
         flex-direction: column;
         gap: 70px;
@@ -78,6 +80,17 @@ const Tutorial: FC<Props> = ({ onClickClose }) => {
         color: ${theme.palette.gray[20]};
       `}
     >
+      <IconButton
+        type="button"
+        css={css`
+          position: absolute;
+          top: 20px;
+          right: 20px;
+        `}
+        onClick={onClickClose}
+      >
+        <CloseIcon />
+      </IconButton>
       <p
         css={css`
           color: ${theme.palette.gray[20]};
