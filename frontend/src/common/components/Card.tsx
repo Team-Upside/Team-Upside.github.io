@@ -20,9 +20,7 @@ const cardStyle = css`
   height: 80%;
   height: 524px;
   max-height: 524px;
-  box-shadow:
-    0px 0px 1px 0px rgba(57, 63, 73, 0.31),
-    0px 3px 5px 0px rgba(56, 61, 69, 0.2);
+  border: 1px solid ${theme.palette.gray[20]};
   border-radius: 20px;
   overflow: hidden;
   padding: 11px 11px 23px 11px;
@@ -204,9 +202,6 @@ const Card: FC<CardProps> = ({ id, message, user, restaurant }) => {
           align-items: center;
           border-radius: 300px;
           background: ${theme.palette.orange[10]};
-          box-shadow:
-            0px 0px 1px 0px rgba(57, 63, 73, 0.31),
-            0px 3px 5px 0px rgba(56, 61, 69, 0.2);
         `}
       >
         <div
