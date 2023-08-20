@@ -8,7 +8,7 @@ import AgentIcon from '../../assets/icons/agent.svg';
 import UserProfileModal from './UserProfileModal';
 import { UserDto } from '../types';
 import { CardDto, RestaurantDto } from '../../cards/types';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAxios } from '../AxiosContext';
 import { ReactComponent as CloseIcon } from '../../assets/icons/close-plain.svg';
 import { Toaster, toast } from 'react-hot-toast';
@@ -59,6 +59,7 @@ const Card: FC<CardProps> = ({ id, message, user, restaurant }) => {
   const axios = useAxios();
 
   const theme = useTheme();
+  const queryClient = useQueryClient();
 
   const [isOpen, setOpen] = useState(false);
   const [visibleAdviceModal, setVisibleAdviceModal] = useState(false);
@@ -75,13 +76,19 @@ const Card: FC<CardProps> = ({ id, message, user, restaurant }) => {
     mutationFn: async () => {
       await axios.post<undefined, CardDto>(`/cards/${id}/approve`);
     },
-    onSuccess: () => toast.success('Successfully approved'),
+    onSuccess: () => {
+      toast.success('Successfully approved');
+      queryClient.invalidateQueries(['chatrooms']);
+    },
   });
   const { mutateAsync: ignore } = useMutation({
     mutationFn: async () => {
       await axios.post<undefined, CardDto>(`/cards/${id}/ignore`);
     },
-    onSuccess: () => toast.success('Successfully ignored'),
+    onSuccess: () => {
+      toast.success('Successfully ignored');
+      queryClient.invalidateQueries(['chatrooms']);
+    },
   });
 
   const outOfFrame = async (direction: string) => {
