@@ -25,12 +25,12 @@ const Navbar = () => {
   return (
     <AppBar
       position="absolute"
-      color="transparent"
       elevation={0}
       variant="outlined"
       css={css`
         top: auto;
         bottom: 0;
+        background-color: #fff;
         & .MuiToolbar-root {
           min-height: 80px;
           height: 80px;
