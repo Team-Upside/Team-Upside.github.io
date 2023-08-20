@@ -28,9 +28,12 @@ const UserProfileModal: FC<Props> = ({ isOpen, onClose, user }) => {
 
   const age = useMemo(() => {
     const TODAY = new Date();
-    let baseAge = TODAY.getFullYear() - new Date(birthdate).getFullYear();
+    let baseAge =
+      TODAY.getFullYear() -
+      new Date(birthdate.replaceAll('. ', '-')).getFullYear();
 
-    const diffInMonth = TODAY.getMonth() - new Date(birthdate).getMonth();
+    const diffInMonth =
+      TODAY.getMonth() - new Date(birthdate.replaceAll('. ', '-')).getMonth();
 
     if (diffInMonth < 0) {
       return baseAge - 1;
