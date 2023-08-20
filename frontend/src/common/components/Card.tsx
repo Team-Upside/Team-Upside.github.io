@@ -77,26 +77,35 @@ const Card: FC<CardProps> = ({ id, message, user, restaurant }) => {
       await axios.post<undefined, CardDto>(`/cards/${id}/approve`);
     },
     onSuccess: () => {
-      toast.success('Successfully approved');
       queryClient.invalidateQueries(['chatrooms']);
     },
+    retry: 0,
   });
   const { mutateAsync: ignore } = useMutation({
     mutationFn: async () => {
       await axios.post<undefined, CardDto>(`/cards/${id}/ignore`);
     },
     onSuccess: () => {
-      toast.success('Successfully ignored');
       queryClient.invalidateQueries(['chatrooms']);
     },
+    retry: 0,
   });
 
   const outOfFrame = async (direction: string) => {
     if (direction === 'left') {
-      await ignore();
+      await toast.promise(ignore(), {
+        loading: 'Processing...',
+        success: 'Successfully done',
+        error: 'Something went wrong. Please try again later.',
+      });
       return;
     }
-    await approve();
+
+    await toast.promise(approve(), {
+      loading: 'Processing...',
+      success: 'Successfully matched!',
+      error: 'Something went wrong. Please try again later.',
+    });
   };
 
   const [showingPictureIndex, setShowingPictureIndex] = useState(0);
