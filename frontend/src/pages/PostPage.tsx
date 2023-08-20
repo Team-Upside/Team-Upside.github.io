@@ -108,6 +108,7 @@ const PostPage: FC = () => {
           onChange={(e) => setSelectedRestaurantId(Number(e.target.value))}
           css={css`
             margin-bottom: 24px;
+            width: 100%;
           `}
         >
           {restaurants?.map(({ id, name }) => (
