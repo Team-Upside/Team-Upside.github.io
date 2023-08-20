@@ -91,17 +91,6 @@ const Card: FC<CardProps> = ({ id, message, user, restaurant }) => {
 
   const [showingPictureIndex, setShowingPictureIndex] = useState(0);
 
-  const style = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-  };
   return (
     <>
       <Modal
@@ -182,9 +171,11 @@ const Card: FC<CardProps> = ({ id, message, user, restaurant }) => {
         onClick={() => setVisibleAdviceModal(true)}
         css={css`
           position: fixed;
-          bottom: 200px;
+          bottom: 80px;
+          top: 548px;
           left: 50%;
-          width: 390px;
+          width: calc(100% - 40px);
+          height: 48px;
           transform: translateX(-50%);
           padding: 8px;
           display: flex;
@@ -245,7 +236,7 @@ const Card: FC<CardProps> = ({ id, message, user, restaurant }) => {
             align-items: center;
             gap: 12px;
             padding: 0 20px;
-            z-index: 3;
+            z-index: 10;
           `}
         >
           <Button type="button" variant="text" onClick={() => setOpen(true)}>
@@ -301,6 +292,7 @@ const Card: FC<CardProps> = ({ id, message, user, restaurant }) => {
             align-items: center;
             overflow: hidden;
             position: relative;
+            z-index: 10;
           `}
           onClick={() =>
             setShowingPictureIndex(
