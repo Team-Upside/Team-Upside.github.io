@@ -5,9 +5,11 @@ import Card from '../common/components/Card';
 import { useAxios } from '../common/AxiosContext';
 import { useQuery } from '@tanstack/react-query';
 import { CardDto } from '../cards/types';
+import { useTheme } from '@mui/material';
 
 const MainPage = () => {
   const axios = useAxios();
+  const theme = useTheme();
 
   const { data: cards } = useQuery({
     queryKey: ['cards'],
@@ -32,6 +34,30 @@ const MainPage = () => {
             justify-content: center;
           `}
         >
+          {cards.length === 0 && (
+            <h2
+              css={css`
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                padding-bottom: 80px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                color: ${theme.palette.gray[100]};
+                font-size: 20px;
+                font-weight: 590;
+                line-height: 140%;
+                letter-spacing: -0.064px;
+                text-align: center;
+              `}
+            >
+              No cards left 😢
+              <br />
+              Why don't you add one?
+            </h2>
+          )}
           {cards.map(({ id, message, user, restaurant }) => (
             <Card
               key={`${user.nickname}-${id}`}
