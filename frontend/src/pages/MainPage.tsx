@@ -6,10 +6,16 @@ import { useAxios } from '../common/AxiosContext';
 import { useQuery } from '@tanstack/react-query';
 import { CardDto } from '../cards/types';
 import { useTheme } from '@mui/material';
+import { useLocalStorageValue } from '@react-hookz/web';
+import Tutorial from '../common/components/Tutorial';
 
 const MainPage = () => {
   const axios = useAxios();
   const theme = useTheme();
+
+  const { value, set } = useLocalStorageValue<boolean>('first', {
+    defaultValue: true,
+  });
 
   const { data: cards } = useQuery({
     queryKey: ['cards'],
@@ -18,6 +24,10 @@ const MainPage = () => {
       return data;
     },
   });
+
+  if (value) {
+    return <Tutorial onClickClose={() => set(false)} />;
+  }
 
   return (
     <div
