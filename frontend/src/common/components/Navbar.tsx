@@ -2,13 +2,25 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import { memo } from 'react';
 import { css } from '@emotion/react';
-import { Button, IconButton } from '@mui/material';
+import { Badge, Button, IconButton } from '@mui/material';
 import { ReactComponent as ChatIcon } from '../../assets/icons/chat.svg';
 import { ReactComponent as PlusIcon } from '../../assets/icons/plus.svg';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAxios } from '../AxiosContext';
+import { useQuery } from '@tanstack/react-query';
+import { ChatroomDto } from '../types';
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const axios = useAxios();
+
+  const { data: chatrooms } = useQuery({
+    queryKey: ['chatrooms'],
+    queryFn: async () => {
+      const { data } = await axios.get<ChatroomDto[]>('/chatrooms');
+      return data;
+    },
+  });
 
   return (
     <AppBar
@@ -34,7 +46,12 @@ const Navbar = () => {
           `}
         >
           <IconButton color="inherit" size="large" component={Link} to="/chat">
-            <ChatIcon />
+            <Badge
+              badgeContent={chatrooms?.filter((x) => x.unread_count > 0).length}
+              color="primary"
+            >
+              <ChatIcon />
+            </Badge>
           </IconButton>
         </div>
         <Button

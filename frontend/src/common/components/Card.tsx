@@ -314,7 +314,7 @@ const Card: FC<CardProps> = ({ id, message, user, restaurant }) => {
               height: 100%;
               background:
                 linear-gradient(
-                  180deg,
+                  0deg,
                   rgba(0, 0, 0, 0) 0%,
                   rgba(0, 0, 0, 0.4) 100%
                 ),
